@@ -52,7 +52,7 @@ class _ImagesClient implements ImagesClient {
     try {
       _value = BatchAnnotateImagesResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options, _result);
       rethrow;
     }
     return _value;

@@ -51,7 +51,7 @@ class _OAuthClient implements OAuthClient {
     try {
       _value = Token.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options, _result);
       rethrow;
     }
     return _value;
