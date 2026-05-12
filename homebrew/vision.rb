@@ -6,11 +6,11 @@
 class Vision < Formula
   desc "CLI tool for Google Vision API — image labeling, face/logo/landmark detection, OCR, and explicit content detection"
   homepage "https://github.com/cdavis-code/google_vision_workspace"
-  version "2.0.1"
+  version "2.0.1+1"
   license "MIT"
 
-  url "https://github.com/cdavis-code/google_vision_workspace/archive/refs/tags/v2.0.1.tar.gz"
-  sha256 "7191cd1b7d6a2b7470993728b0cbd39e696888a310addf2aeb3afaaa00082db3"
+  url "https://github.com/cdavis-code/google_vision_workspace/archive/refs/tags/v2.0.1+1.tar.gz"
+  sha256 "f8593d1a379d7a77404aa87cab772fb67b002ef5209572798c0fe0406583b0f5"
 
   # Development / HEAD install: brew install --head vision
   head "https://github.com/cdavis-code/google_vision_workspace.git", branch: "main"

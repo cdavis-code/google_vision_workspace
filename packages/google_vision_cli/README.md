@@ -68,18 +68,31 @@ vision <command> [arguments]
 
 The CLI authenticates via **JWT only** using a service account key file (API keys are not supported).
 
+### Getting a credentials file
+
+1. Go to the [Google Cloud Console](https://console.cloud.google.com/), create or select a project
+2. Enable the [Vision API](https://console.cloud.google.com/apis/library/vision.googleapis.com)
+3. Go to **IAM & Admin → Service Accounts**, create a new service account
+4. Select the service account, go to **Keys → Add Key → Create New Key**, choose **JSON**
+5. Download the key file and place it at the default path:
+
+```sh
+mkdir -p ~/.vision
+mv ~/Downloads/project-key.json ~/.vision/credentials.json
+```
+
 ```sh
 # Place credentials at the default path
 ~/.vision/credentials.json
 
 # Or specify a custom path
-dart run vision --credential-file /path/to/credentials.json <command>
+vision --credential-file /path/to/credentials.json <command>
 ```
 
 ## Usage
 
 ```sh
-dart run vision [global-options] <command> [command-options]
+vision [global-options] <command> [command-options]
 ```
 
 ## Global Options
@@ -96,7 +109,7 @@ dart run vision [global-options] <command> [command-options]
 Display the package name and version.
 
 ```sh
-dart run vision version
+vision version
 ```
 
 ### `detect`
@@ -112,14 +125,14 @@ Run image detection and annotation for a batch of images or files.
 
 ```sh
 # Label detection on an image
-dart run vision detect --image-file photo.jpg --features LABEL_DETECTION
+vision detect --image-file photo.jpg --features LABEL_DETECTION
 
 # Multiple features on a single image
-dart run vision detect --image-file photo.jpg \
+vision detect --image-file photo.jpg \
   --features LABEL_DETECTION,FACE_DETECTION,TEXT_DETECTION
 
 # Process specific pages of a PDF
-dart run vision detect --image-file document.pdf \
+vision detect --image-file document.pdf \
   --features DOCUMENT_TEXT_DETECTION --pages 1,2,3
 ```
 
@@ -135,10 +148,10 @@ Get crop suggestion vertices for an image.
 
 ```sh
 # Get default crop hints
-dart run vision crop_hints --image-file photo.jpg
+vision crop_hints --image-file photo.jpg
 
 # Specify desired aspect ratios
-dart run vision crop_hints --image-file photo.jpg \
+vision crop_hints --image-file photo.jpg \
   --aspect-ratios 1.33333,1.77778
 ```
 
@@ -151,7 +164,7 @@ Detect explicit content (adult, violence, medical, racy) in an image.
 | `--image-file` | yes | Path to the image file to process |
 
 ```sh
-dart run vision safe_search --image-file photo.jpg
+vision safe_search --image-file photo.jpg
 ```
 
 ### `highlight`
@@ -168,11 +181,11 @@ Draw bounding boxes around detected objects and save the result.
 
 ```sh
 # Highlight detected faces
-dart run vision highlight --image-file photo.jpg \
+vision highlight --image-file photo.jpg \
   --output-file annotated.jpg --features FACE_DETECTION
 
 # Highlight objects and landmarks in blue
-dart run vision highlight --image-file photo.jpg \
+vision highlight --image-file photo.jpg \
   --output-file annotated.jpg \
   --features OBJECT_LOCALIZATION,LANDMARK_DETECTION \
   --line-color blue
@@ -190,11 +203,11 @@ Get confidence scores for detected objects as a JSON array.
 
 ```sh
 # Get face detection confidence scores
-dart run vision score --image-file photo.jpg \
+vision score --image-file photo.jpg \
   --features FACE_DETECTION
 
 # Get label detection scores
-dart run vision score --image-file photo.jpg \
+vision score --image-file photo.jpg \
   --features LABEL_DETECTION
 
 # Output: [0.98, 0.95, 0.87, ...]
