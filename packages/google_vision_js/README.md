@@ -2,7 +2,6 @@
 
 ![banner](https://raw.githubusercontent.com/cdavis-code/google_vision_workspace/main/packages/google_vision_js/images/banner.svg)
 
-[![Pub Version](https://img.shields.io/pub/v/google_vision_js)](https://pub.dev/packages/google_vision_js)
 [![npm Version](https://img.shields.io/npm/v/@unngh%2Fgoogle-vision)](https://www.npmjs.com/package/@unngh/google-vision)
 
 JavaScript interop wrapper for the Google Vision API. Enables Vision AI features — image labeling, face detection, OCR, safe search, and more — in Node.js and browser environments.
@@ -26,16 +25,8 @@ This package wraps the [google_vision](https://pub.dev/packages/google_vision) D
 
 ## Installation
 
-### npm
-
 ```bash
 npm install @unngh/google-vision
-```
-
-### pub.dev
-
-```bash
-dart pub add google_vision_js
 ```
 
 ## Prerequisites
@@ -102,8 +93,8 @@ await vision.withJwt(credentials);
 # Install Dart dependencies
 dart pub get
 
-# Compile to JavaScript
-dart run tool/compile_js.dart
+# Compile to JavaScript (dart2js + tsup)
+bash scripts/build.sh
 ```
 
 ## License
