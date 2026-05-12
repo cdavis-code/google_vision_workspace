@@ -1,0 +1,136 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 640">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1a2e;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#16213e;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0f3460;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="dart-blue" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0175C2;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#00B4AB;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="google-accent" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#4285F4;stop-opacity:1" />
+      <stop offset="33%" style="stop-color:#EA4335;stop-opacity:1" />
+      <stop offset="66%" style="stop-color:#FBBC05;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#34A853;stop-opacity:1" />
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="glow-strong">
+      <feGaussianBlur stdDeviation="5" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1280" height="640" fill="url(#bg)"/>
+
+  <!-- Grid pattern -->
+  <g opacity="0.08">
+    <line x1="0" y1="0" x2="1280" y2="640" stroke="white" stroke-width="1"/>
+    <line x1="1280" y1="0" x2="0" y2="640" stroke="white" stroke-width="1"/>
+    <line x1="640" y1="0" x2="640" y2="640" stroke="white" stroke-width="1"/>
+    <line x1="0" y1="320" x2="1280" y2="320" stroke="white" stroke-width="1"/>
+  </g>
+
+  <!-- Subtle decorative circles -->
+  <circle cx="180" cy="160" r="130" fill="#0175C2" opacity="0.04"/>
+  <circle cx="1100" cy="480" r="150" fill="#4285F4" opacity="0.04"/>
+  <circle cx="1100" cy="160" r="100" fill="#34A853" opacity="0.03"/>
+  <circle cx="180" cy="480" r="110" fill="#FBBC05" opacity="0.03"/>
+
+  <!-- Camera / Vision icon with Dart theme -->
+  <g transform="translate(540, 80)" filter="url(#glow)">
+    <!-- Camera body -->
+    <rect x="10" y="40" width="180" height="120" rx="16" fill="none" stroke="url(#dart-blue)" stroke-width="3"/>
+    <!-- Camera lens outer -->
+    <circle cx="100" cy="100" r="40" fill="none" stroke="url(#google-accent)" stroke-width="2.5"/>
+    <!-- Camera lens inner -->
+    <circle cx="100" cy="100" r="25" fill="url(#dart-blue)" opacity="0.3"/>
+    <circle cx="100" cy="100" r="15" fill="url(#google-accent)" opacity="0.5"/>
+    <circle cx="100" cy="100" r="7" fill="white" opacity="0.8"/>
+    <!-- Flash -->
+    <circle cx="160" cy="55" r="6" fill="#FBBC05" opacity="0.6"/>
+    <!-- Camera top detail -->
+    <rect x="130" y="30" width="30" height="12" rx="4" fill="url(#google-accent)" opacity="0.5"/>
+    <!-- Scan line across lens -->
+    <line x1="60" y1="110" x2="140" y2="110" stroke="#00B4AB" stroke-width="1.5" opacity="0.4"/>
+    <line x1="65" y1="120" x2="135" y2="120" stroke="#0175C2" stroke-width="1" opacity="0.3"/>
+  </g>
+
+  <!-- Dart logo mini badge -->
+  <g transform="translate(660, 105)">
+    <rect x="0" y="0" width="50" height="24" rx="12" fill="#0175C2"/>
+    <text x="25" y="17" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="white" text-anchor="middle">Dart</text>
+  </g>
+
+  <!-- Connection nodes -->
+  <g opacity="0.45">
+    <circle cx="200" cy="180" r="6" fill="#0175C2"/>
+    <circle cx="1080" cy="180" r="6" fill="#4285F4"/>
+    <circle cx="200" cy="460" r="6" fill="#FBBC05"/>
+    <circle cx="1080" cy="460" r="6" fill="#34A853"/>
+    <line x1="200" y1="180" x2="540" y2="160" stroke="#0175C2" stroke-width="1.5" opacity="0.35"/>
+    <line x1="1080" y1="180" x2="740" y2="160" stroke="#4285F4" stroke-width="1.5" opacity="0.35"/>
+    <line x1="200" y1="460" x2="540" y2="310" stroke="#FBBC05" stroke-width="1.5" opacity="0.35"/>
+    <line x1="1080" y1="460" x2="740" y2="310" stroke="#34A853" stroke-width="1.5" opacity="0.35"/>
+  </g>
+
+  <!-- Title -->
+  <text x="640" y="370" font-family="'SF Mono', 'Fira Code', 'Courier New', monospace" font-size="68" font-weight="bold" fill="white" text-anchor="middle" filter="url(#glow-strong)">
+    google_vision
+  </text>
+
+  <!-- Subtitle -->
+  <text x="640" y="420" font-family="Arial, sans-serif" font-size="26" fill="#00B4AB" text-anchor="middle">
+    Native Dart Client for Google Cloud Vision
+  </text>
+
+  <!-- Description -->
+  <text x="640" y="460" font-family="Arial, sans-serif" font-size="18" fill="#aab0b6" text-anchor="middle">
+    Image labeling, face/logo/landmark detection, OCR, safe search, and more
+  </text>
+
+  <!-- pub.dev badge -->
+  <g transform="translate(480, 490)">
+    <rect x="0" y="0" width="68" height="30" rx="15" fill="#0175C2"/>
+    <text x="34" y="20" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="white" text-anchor="middle">pub.dev</text>
+  </g>
+
+  <!-- Version badge -->
+  <g transform="translate(560, 490)">
+    <rect x="0" y="0" width="78" height="30" rx="15" fill="#0f3460" stroke="#00B4AB" stroke-width="1.5"/>
+    <text x="39" y="20" font-family="Arial, sans-serif" font-size="14" fill="#00B4AB" text-anchor="middle">v2.0.0+12</text>
+  </g>
+
+  <!-- Dart badge -->
+  <g transform="translate(650, 490)">
+    <rect x="0" y="0" width="58" height="30" rx="15" fill="#0175C2"/>
+    <text x="29" y="20" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="white" text-anchor="middle">Dart</text>
+  </g>
+
+  <!-- Cross-platform badge -->
+  <g transform="translate(720, 490)">
+    <rect x="0" y="0" width="110" height="30" rx="15" fill="#16213e" stroke="#4285F4" stroke-width="1"/>
+    <text x="55" y="20" font-family="Arial, sans-serif" font-size="13" fill="#4285F4" text-anchor="middle">Cross-platform</text>
+  </g>
+
+  <!-- Feature icons at bottom -->
+  <g opacity="0.75">
+    <text x="120" y="565" font-family="Arial, sans-serif" font-size="15" fill="#0175C2" text-anchor="middle">🏷️ Label Detection</text>
+    <text x="320" y="565" font-family="Arial, sans-serif" font-size="15" fill="#4285F4" text-anchor="middle">😀 Face Detection</text>
+    <text x="520" y="565" font-family="Arial, sans-serif" font-size="15" fill="#EA4335" text-anchor="middle">📝 OCR</text>
+    <text x="720" y="565" font-family="Arial, sans-serif" font-size="15" fill="#FBBC05" text-anchor="middle">🔍 Safe Search</text>
+    <text x="920" y="565" font-family="Arial, sans-serif" font-size="15" fill="#34A853" text-anchor="middle">🏛️ Landmarks</text>
+    <text x="1120" y="565" font-family="Arial, sans-serif" font-size="15" fill="#00B4AB" text-anchor="middle">🔷 Logo Detection</text>
+  </g>
+</svg>
