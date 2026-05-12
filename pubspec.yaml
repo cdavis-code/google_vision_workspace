@@ -8,5 +8,99 @@ workspace:
   - packages/google_vision_cli
   - packages/google_vision_flutter
 
+melos:
+  repository: https://github.com/cdavis-code/google_vision_workspace
+
+  categories:
+    document:
+      - packages/google_vision
+      - packages/google_vision_cli
+      - packages/google_vision_flutter
+
+  scripts:
+    analyze:
+      exec: dart analyze .
+      failFast: true
+
+    dep:
+      exec: dart pub get
+
+    build:
+      exec: dart run build_runner build
+      failFast: true
+      packageFilters:
+        fileExists: melos_google_vision.iml
+      select-package:
+        depends-on: build_runner    
+
+    cleanup:
+      packageFilters:
+        fileExists: google_vision_flutter.iml
+      steps:
+        - flutter clean
+        - flutter pub get
+
+    format:
+      exec: dart format .
+      failFast: true
+
+    doc:
+      exec: dart doc .
+      failFast: true
+      packageFilters:
+        ignore:
+          - "*example*"
+          - "*demo*"
+
+    meta:
+      exec: dart \$MELOS_ROOT_PATH/tool/update_meta.dart
+      failFast: true
+      packageFilters:
+        ignore:
+          - "*example*"
+          - "*demo*"
+      description: Run metadata generator for all packages.
+
+    pana:
+      exec: pana --no-dartdoc .
+      packageFilters:
+        ignore:
+          - "*example*"
+          - "*demo*"    
+      description: Run pana checks for all packages.
+
+    prep:
+      steps:
+        - melos run build
+        - melos run meta
+        - melos run markdown
+        - melos run format
+        - melos run analyze
+      description: Run prep steps for dart and flutter.
+
+    publish:google_vision:
+      exec: dart pub publish --force
+      failFast: true
+      packageFilters:
+        fileExists: melos_google_vision.iml
+
+    publish:google_vision_flutter:
+      exec: dart pub publish --force
+      failFast: true
+      packageFilters:
+        fileExists: google_vision_flutter.iml
+
+    publish:flutter:
+      run: melos run meta && melos run analyze && melos run format && melos run markdown && melos run dryrun:flutter
+      description: Run \`dart publish\` for all packages.
+
+    dryrun:dart:
+      run: melos exec --ignore="google_vision_flutter" dart pub publish --dry-run
+      description: Run \`dart publish\` for Dart package.
+
+    dryrun:flutter:
+      run: melos exec --ignore="google_vision_flutter" flutter pub publish --dry-run
+      description: Run \`flutter pub publish\` for Flutter package.
+
 dev_dependencies:
   melos: ^7.6.0

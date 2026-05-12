@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.0.0+12
+
+* version bump for publish
+
 ## 2.0.0+11
 
 * security fixes: auth header logging disabled, API key moved to headers

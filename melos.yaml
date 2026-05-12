@@ -47,7 +47,7 @@ scripts:
         - "*demo*"
 
   meta:
-    exec: grind 'pt-meta'
+    exec: dart $MELOS_ROOT_PATH/tool/update_meta.dart
     failFast: true
     packageFilters:
       ignore:
