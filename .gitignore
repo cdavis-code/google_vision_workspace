@@ -25,3 +25,7 @@ doc/api/
 *.js.map
 
 *.log
+
+# Node packages
+node_modules/
+package-lock.json
