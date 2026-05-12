@@ -44,8 +44,8 @@ final response = await googleVision.image.labelDetection(
 brew tap cdavis-code/google-vision
 brew install vision
 
-# Or run from source
-dart run google_vision_cli:vision detect --api-key YOUR_KEY image.jpg
+# Run landmark detection
+vision detect --image-file photo.jpg --features LANDMARK_DETECTION
 ```
 
 ### Flutter
@@ -82,17 +82,7 @@ This project uses [Melos](https://melos.invertase.dev/) for monorepo management.
 | Pana score check | `melos run pana` |
 | Publish prep | `melos run prep` |
 
-## CLI Install
 
-The CLI is available via [Homebrew](https://brew.sh):
-
-```bash
-brew tap cdavis-code/google-vision
-brew install vision
-
-# Verify
-vision --help
-```
 
 ## CI / CD
 
