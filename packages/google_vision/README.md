@@ -1,5 +1,7 @@
 # Google Vision Images REST API Client
 
+![banner](https://raw.githubusercontent.com/cdavis-code/google_vision_workspace/refs/heads/main/packages/google_vision/images/banner.svg)
+
 [![pub package](https://img.shields.io/pub/v/google_vision.svg)](https://pub.dartlang.org/packages/google_vision)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 

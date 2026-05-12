@@ -8,12 +8,10 @@ name: Dart
 on:
   push:
     branches: [main]
-    paths:
-      - packages/google_vision/**
+    tags:
+      - 'google_vision_js-v*'
   pull_request:
     branches: [main]
-    paths:
-      - packages/google_vision/**
 
 jobs:
   pana:
@@ -29,15 +27,16 @@ jobs:
       #     with:
       #       timezoneLinux: "America/Toronto"
 
-      # Note: This workflow uses the latest stable version of the Dart SDK.
-      # You can specify other versions if desired, see documentation here:
-      # https://github.com/dart-lang/setup-dart/blob/main/README.md
-      - uses: dart-lang/setup-dart@v1
-      # - uses: dart-lang/setup-dart@9a04e6d73cca37bd455e0608d7e5092f881fd603
+      # Flutter SDK is required even for Dart-only packages because
+      # workspace resolution (resolution: workspace) resolves all
+      # workspace members, including google_vision_flutter.
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
 
       - name: Install dependencies
         working-directory: ./packages/google_vision
-        run: dart pub get
+        run: flutter pub get
 
       # Uncomment this step to verify the use of 'dart format' on each commit.
       - name: Verify formatting
@@ -48,3 +47,41 @@ jobs:
       - name: Analyze project source
         working-directory: ./packages/google_vision
         run: dart analyze .
+
+  google_vision_js:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dart-lang/setup-dart@v1
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Install npm deps
+        working-directory: packages/google_vision_js
+        run: npm install
+      - name: Build (dart2js + tsup)
+        working-directory: packages/google_vision_js
+        run: npm run build
+
+  publish-google-vision-js:
+    needs: [google_vision_js]
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/google_vision_js-v')
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dart-lang/setup-dart@v1
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          registry-url: 'https://registry.npmjs.org'
+      - name: Install npm deps
+        working-directory: packages/google_vision_js
+        run: npm install
+      - name: Build (dart2js + tsup)
+        working-directory: packages/google_vision_js
+        run: npm run build
+      - name: Publish to npm
+        working-directory: packages/google_vision_js
+        run: npm publish --access=public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

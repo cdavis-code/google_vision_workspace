@@ -1,0 +1,142 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 640">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0f2027;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#203a43;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#2c5364;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="google-blue" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#4285F4;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#34A853;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="accent-js" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#EA4335;stop-opacity:1" />
+      <stop offset="33%" style="stop-color:#FBBC05;stop-opacity:1" />
+      <stop offset="66%" style="stop-color:#34A853;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#4285F4;stop-opacity:1" />
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="glow-strong">
+      <feGaussianBlur stdDeviation="6" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1280" height="640" fill="url(#bg)"/>
+
+  <!-- Grid pattern -->
+  <g opacity="0.08">
+    <line x1="0" y1="0" x2="1280" y2="640" stroke="white" stroke-width="1"/>
+    <line x1="1280" y1="0" x2="0" y2="640" stroke="white" stroke-width="1"/>
+    <line x1="640" y1="0" x2="640" y2="640" stroke="white" stroke-width="1"/>
+    <line x1="0" y1="320" x2="1280" y2="320" stroke="white" stroke-width="1"/>
+  </g>
+
+  <!-- Subtle decorative circles -->
+  <circle cx="150" cy="150" r="120" fill="#4285F4" opacity="0.04"/>
+  <circle cx="1130" cy="490" r="140" fill="#34A853" opacity="0.04"/>
+  <circle cx="1130" cy="150" r="100" fill="#FBBC05" opacity="0.03"/>
+  <circle cx="150" cy="490" r="110" fill="#EA4335" opacity="0.03"/>
+
+  <!-- Vision AI eye icon -->
+  <g transform="translate(540, 100)" filter="url(#glow)">
+    <!-- Outer ring -->
+    <ellipse cx="100" cy="80" rx="85" ry="60" fill="none" stroke="url(#accent-js)" stroke-width="4" opacity="0.3"/>
+    <!-- Eye shape -->
+    <ellipse cx="100" cy="80" rx="70" ry="45" fill="none" stroke="url(#accent-js)" stroke-width="3"/>
+    <!-- Inner pupil -->
+    <circle cx="100" cy="80" r="25" fill="url(#accent-js)" opacity="0.8"/>
+    <circle cx="100" cy="80" r="12" fill="white" opacity="0.9"/>
+    <circle cx="100" cy="80" r="6" fill="url(#bg)"/>
+    <!-- Iris highlight -->
+    <ellipse cx="90" cy="72" rx="8" ry="5" fill="white" opacity="0.3"/>
+    <!-- Scan lines across eye suggesting AI/Vision -->
+    <line x1="35" y1="80" x2="165" y2="80" stroke="#4285F4" stroke-width="1" opacity="0.4"/>
+    <line x1="40" y1="95" x2="160" y2="95" stroke="#34A853" stroke-width="1" opacity="0.3"/>
+    <line x1="45" y1="65" x2="155" y2="65" stroke="#FBBC05" stroke-width="1" opacity="0.3"/>
+  </g>
+
+  <!-- JS chip badge on the eye -->
+  <g transform="translate(615, 140)">
+    <rect x="0" y="0" width="44" height="24" rx="12" fill="#0f2027" stroke="#f7df1e" stroke-width="1.5"/>
+    <text x="22" y="17" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="#f7df1e" text-anchor="middle">JS</text>
+  </g>
+
+  <!-- Connection nodes -->
+  <g opacity="0.5">
+    <circle cx="180" cy="180" r="6" fill="#4285F4"/>
+    <circle cx="1100" cy="180" r="6" fill="#34A853"/>
+    <circle cx="180" cy="460" r="6" fill="#FBBC05"/>
+    <circle cx="1100" cy="460" r="6" fill="#EA4335"/>
+    <line x1="180" y1="180" x2="540" y2="155" stroke="#4285F4" stroke-width="1.5" opacity="0.4"/>
+    <line x1="1100" y1="180" x2="740" y2="155" stroke="#34A853" stroke-width="1.5" opacity="0.4"/>
+    <line x1="180" y1="460" x2="540" y2="325" stroke="#FBBC05" stroke-width="1.5" opacity="0.4"/>
+    <line x1="1100" y1="460" x2="740" y2="325" stroke="#EA4335" stroke-width="1.5" opacity="0.4"/>
+  </g>
+
+  <!-- Scanning overlay lines (animated feel) -->
+  <g opacity="0.15">
+    <rect x="440" y="60" width="400" height="2" rx="1" fill="#4285F4"/>
+    <rect x="440" y="66" width="350" height="2" rx="1" fill="#34A853"/>
+    <rect x="440" y="72" width="300" height="2" rx="1" fill="#FBBC05"/>
+  </g>
+
+  <!-- Title -->
+  <text x="640" y="370" font-family="'SF Mono', 'Fira Code', 'Courier New', monospace" font-size="68" font-weight="bold" fill="white" text-anchor="middle" filter="url(#glow-strong)">
+    google_vision_js
+  </text>
+
+  <!-- Subtitle -->
+  <text x="640" y="420" font-family="Arial, sans-serif" font-size="26" fill="#34A853" text-anchor="middle">
+    Google Vision AI for Node.js &amp; Browsers
+  </text>
+
+  <!-- Description -->
+  <text x="640" y="460" font-family="Arial, sans-serif" font-size="18" fill="#aab0b6" text-anchor="middle">
+    JavaScript interop — image labeling, face detection, OCR, safe search, and more
+  </text>
+
+  <!-- npm badge -->
+  <g transform="translate(505, 490)">
+    <rect x="0" y="0" width="62" height="30" rx="15" fill="#cb3837"/>
+    <text x="31" y="20" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="white" text-anchor="middle">npm</text>
+  </g>
+
+  <!-- Version badge -->
+  <g transform="translate(580, 490)">
+    <rect x="0" y="0" width="70" height="30" rx="15" fill="#4285F4"/>
+    <text x="35" y="20" font-family="Arial, sans-serif" font-size="14" fill="white" text-anchor="middle">v1.0.0</text>
+  </g>
+
+  <!-- Dart badge -->
+  <g transform="translate(663, 490)">
+    <rect x="0" y="0" width="58" height="30" rx="15" fill="#0175C2"/>
+    <text x="29" y="20" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="white" text-anchor="middle">Dart</text>
+  </g>
+
+  <!-- Universal badge -->
+  <g transform="translate(733, 490)">
+    <rect x="0" y="0" width="90" height="30" rx="15" fill="#203a43" stroke="#4285F4" stroke-width="1"/>
+    <text x="45" y="20" font-family="Arial, sans-serif" font-size="13" fill="#4285F4" text-anchor="middle">Universal</text>
+  </g>
+
+  <!-- Feature icons at bottom -->
+  <g opacity="0.75">
+    <text x="120" y="565" font-family="Arial, sans-serif" font-size="15" fill="#4285F4" text-anchor="middle">🏷️ Label Detection</text>
+    <text x="320" y="565" font-family="Arial, sans-serif" font-size="15" fill="#34A853" text-anchor="middle">😀 Face Detection</text>
+    <text x="520" y="565" font-family="Arial, sans-serif" font-size="15" fill="#FBBC05" text-anchor="middle">📝 OCR</text>
+    <text x="720" y="565" font-family="Arial, sans-serif" font-size="15" fill="#EA4335" text-anchor="middle">🔍 Safe Search</text>
+    <text x="920" y="565" font-family="Arial, sans-serif" font-size="15" fill="#4285F4" text-anchor="middle">🏛️ Landmarks</text>
+    <text x="1120" y="565" font-family="Arial, sans-serif" font-size="15" fill="#34A853" text-anchor="middle">🔷 Logo Detection</text>
+  </g>
+</svg>

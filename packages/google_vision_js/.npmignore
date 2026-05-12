@@ -1,0 +1,36 @@
+# Dart source
+lib/
+bin/
+tool/
+scripts/
+tsup.config.ts
+tsconfig.json
+.dart_tool/
+.pubignore
+
+# Build artifacts (before npm publish)
+build/
+*.g.dart
+*.info.json
+*.js_
+*.js.deps
+*.js.map
+
+# Dev files
+pubspec.yaml
+pubspec.lock
+analysis_options.yaml
+.npmignore
+.gitignore
+.env
+
+# IDE
+.idea/
+.vscode/
+
+# Melos
+melos_*.iml
+
+# Node modules (dev only)
+node_modules/
+package-lock.json

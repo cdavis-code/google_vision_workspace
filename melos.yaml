@@ -9,6 +9,7 @@ categories:
     - packages/google_vision
     - packages/google_vision_cli
     - packages/google_vision_flutter
+    - packages/google_vision_js
 
 
 scripts:
@@ -91,6 +92,19 @@ scripts:
     failFast: true
     packageFilters:
       fileExists: google_vision_flutter.iml
+
+  # JS / npm scripts
+  build:js:
+    exec: dart run tool/compile_js.dart
+    failFast: true
+    packageFilters:
+      scope:
+        - google_vision_js
+    description: Compile the google_vision_js package to JavaScript.
+
+  publish:npm:
+    run: melos run build:js && cd packages/google_vision_js && npm publish --access public
+    description: Build JS output and publish @unngh/google-vision to npm.
 
   # prep:flutter:
   #   run: melos run build && melos run meta && melos run markdown && melos run analyze && melos run format
