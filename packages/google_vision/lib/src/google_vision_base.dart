@@ -107,8 +107,10 @@ class GoogleVision with UiLoggy {
 
   Future<void> confirmToken() async {
     if (tokenGenerator == null) {
-      throw AuthorizationException('Token generator not configured. '
-          'Call withApiKey(), withJwt(), or withGenerator() first.');
+      throw AuthorizationException(
+        'Token generator not configured. '
+        'Call withApiKey(), withJwt(), or withGenerator() first.',
+      );
     } else {
       if (tokenExpiry.isBefore(DateTime.now())) {
         final tokenData = await tokenGenerator!.generate();

@@ -53,6 +53,7 @@ class JsonSettings {
   Map<String, dynamic> toJson() => _$JsonSettingsToJson(this);
 
   @override
-  String toString() => 'JsonSettings(type: $type, projectId: $projectId, '
+  String toString() =>
+      'JsonSettings(type: $type, projectId: $projectId, '
       'clientEmail: $clientEmail)';
 }

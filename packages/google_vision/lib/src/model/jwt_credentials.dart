@@ -17,6 +17,7 @@ class JwtCredentials {
   Map<String, dynamic> toJson() => _$JwtCredentialsToJson(this);
 
   @override
-  String toString() => 'JwtCredentials(scope: $scope, '
+  String toString() =>
+      'JwtCredentials(scope: $scope, '
       'clientEmail: ${settings.clientEmail})';
 }
