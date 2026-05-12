@@ -6,7 +6,7 @@ class JsonImage extends gv.JsonImage {
   /// Creates a new instance of [JsonImage].
   JsonImage({super.imageUri, super.byteBuffer}) {
     if (imageUri == null && byteBuffer == null) {
-      throw Exception('Invalid JsonImage');
+      throw ArgumentError('JsonImage requires either imageUri or byteBuffer');
     }
   }
 

@@ -6,7 +6,7 @@ class InputConfig extends gv.InputConfig {
   /// Creates a new instance of [InputConfig].
   InputConfig({super.gcsSource, super.content, required super.mimeType}) {
     if (gcsSource == null && content == null) {
-      throw Exception('Invalid InputConfig');
+      throw ArgumentError('InputConfig requires either gcsSource or content');
     }
   }
 

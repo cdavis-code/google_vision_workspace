@@ -39,11 +39,20 @@ class GoogleVision with UiLoggy implements gv.GoogleVision {
   }
 
   /// Create a new instance of [GoogleVision] with the given [apiKey].
+  ///
+  /// ## Security note
+  /// API keys embedded in mobile apps can be extracted from the compiled
+  /// binary. For production apps, prefer [withJwt] using a service account,
+  /// or use a backend proxy to issue short-lived tokens via [withGenerator].
   @override
   GoogleVision withApiKey(
     String apiKey, {
     Map<String, String>? additionalHeaders,
   }) {
+    if (apiKey.isEmpty) {
+      throw ArgumentError('apiKey must not be empty');
+    }
+
     _googleVision.withApiKey(apiKey, additionalHeaders: additionalHeaders);
 
     return this;

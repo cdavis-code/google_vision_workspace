@@ -30,7 +30,7 @@ A command-line interface for the Google Vision API. Wraps the [`google_vision`](
 
 ```sh
 # Install via Homebrew
-brew tap faithoflifedev/google-vision
+brew tap cdavis-code/google-vision
 brew install vision
 
 # Run landmark detection
@@ -42,8 +42,11 @@ vision detect --image-file photo.jpg --features LANDMARK_DETECTION
 ### Homebrew
 
 ```sh
-brew tap faithoflifedev/google-vision
+brew tap cdavis-code/google-vision
 brew install vision
+
+# Run landmark detection
+vision detect --image-file photo.jpg --features LANDMARK_DETECTION
 ```
 
 ### Dart pub
@@ -53,7 +56,7 @@ brew install vision
 dart pub global activate google_vision_cli
 
 # Or run directly from the workspace
-dart run vision <command> [arguments]
+vision <command> [arguments]
 ```
 
 ## Prerequisites

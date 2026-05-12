@@ -4,6 +4,16 @@ import 'package:flutter/material.dart';
 import 'package:google_vision/google_vision.dart' as gv;
 import 'package:google_vision_flutter/google_vision_flutter.dart';
 
+/// A generic error message used when [onError] is not provided.
+/// Prevents leaking internal implementation details (API errors, stack traces,
+/// Dio exception details) to end users.
+String _genericErrorMessage(Object error) {
+  // Log the full error for debugging purposes.
+  // In production, this would go to your analytics/crash reporting service.
+  debugPrint('GoogleVisionError: $error');
+  return 'An unexpected error occurred. Please try again.';
+}
+
 abstract class GoogleVisionBuilderBase extends StatelessWidget {
   final FutureOr<gv.GoogleVision> googleVision;
 
@@ -58,7 +68,7 @@ abstract class GoogleVisionBuilderBase extends StatelessWidget {
         widget = builder(context, snapshot);
       } else if (snapshot.hasError) {
         widget = onError == null
-            ? Center(child: Text('${snapshot.error}'))
+            ? Center(child: Text(_genericErrorMessage(snapshot.error!)))
             : onError!(snapshot.error!);
       }
 

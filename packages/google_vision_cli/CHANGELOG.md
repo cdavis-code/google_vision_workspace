@@ -1,5 +1,13 @@
 # Changelog
 
+## 2.0.1+1
+
+* README installation instructions updated
+
+## 2.0.1
+
+* Homebrew tap updated to cdavis-code
+
 ## 2.0.0+12
 
 * version bump for publish

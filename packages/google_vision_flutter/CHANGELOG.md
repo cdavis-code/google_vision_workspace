@@ -1,5 +1,15 @@
 # Changelog
 
+## 2.0.0+12
+
+* secure coding improvements
+* table of contents added to README
+
+## 2.0.0+11
+
+* pub.dev release
+* dependency bump
+
 ## 2.0.0+10
 
 * pub.dev fix
@@ -104,4 +114,4 @@
 
 ## 0.0.1
 
-* TODO: Describe initial release.
+* Initial release.

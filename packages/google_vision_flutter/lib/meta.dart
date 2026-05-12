@@ -6,5 +6,5 @@ library;
 import 'dart:convert' show json;
 
 final pubSpec = json.decode(
-  '{"name":"google_vision_flutter","version":"2.0.0+10","description":"Add Google Visions image labeling, face, logo, and landmark detection into your Flutter applications.","homepage":"https://github.com/cdavis-code/google_vision_workspace/tree/main/packages/google_vision_flutter","repository":"https://github.com/cdavis-code/google_vision_workspace"}',
+  '{"name":"google_vision_flutter","version":"2.0.0+12","description":"Add Google Visions image labeling, face, logo, and landmark detection into your Flutter applications.","homepage":"https://github.com/cdavis-code/google_vision_workspace/tree/main/packages/google_vision_flutter","repository":"https://github.com/cdavis-code/google_vision_workspace"}',
 );

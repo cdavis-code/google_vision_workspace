@@ -6,5 +6,5 @@ library;
 import 'dart:convert' show json;
 
 final pubSpec = json.decode(
-  '{"name":"google_vision_cli","version":"2.0.0+12","description":"A CLI tool for making API requests to Google Vision API using the google_vision package.","homepage":"https://github.com/cdavis-code/google_vision_workspace/tree/main/packages/google_vision_cli","repository":"https://github.com/cdavis-code/google_vision_workspace"}',
+  '{"name":"google_vision_cli","version":"2.0.1+1","description":"A CLI tool for making API requests to Google Vision API using the google_vision package.","homepage":"https://github.com/cdavis-code/google_vision_workspace/tree/main/packages/google_vision_cli","repository":"https://github.com/cdavis-code/google_vision_workspace"}',
 );
