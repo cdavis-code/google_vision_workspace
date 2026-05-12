@@ -1,7 +1,12 @@
 name: google_vision_workspace
 
 environment:
-  sdk: ">=3.0.0 <4.0.0"
+  sdk: ^3.8.0
+
+workspace:
+  - packages/google_vision
+  - packages/google_vision_cli
+  - packages/google_vision_flutter
 
 dev_dependencies:
-  melos: ^6.1.0
+  melos: ^7.6.0

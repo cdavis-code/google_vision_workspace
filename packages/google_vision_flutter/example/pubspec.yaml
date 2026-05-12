@@ -31,7 +31,7 @@ flutter:
     - assets/cn_tower.jpg
     - assets/dj.jpg # https://commons.wikimedia.org/wiki/Category:Images#/media/File:DJ_Kelblizz.jpg
     - assets/google_logo.jpg
-    - assets/service_credentials.json
+    #    - assets/service_credentials.json
     - assets/setagaya_small.jpg
     - assets/structures.png
     - assets/young-man-smiling.jpg

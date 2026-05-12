@@ -3,7 +3,7 @@ import 'dart:typed_data';
 import 'package:args/command_runner.dart';
 import 'package:dio/dio.dart';
 import 'package:google_vision/google_vision.dart';
-import 'package:google_vision/google_vision_cli.dart';
+import 'package:google_vision_cli/google_vision_cli.dart';
 import 'package:image/image.dart' as img;
 
 /// Draw a box to highlight any objects detected.

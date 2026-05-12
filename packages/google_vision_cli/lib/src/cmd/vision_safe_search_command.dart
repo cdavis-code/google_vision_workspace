@@ -1,7 +1,7 @@
 import 'package:args/command_runner.dart';
 import 'package:dio/dio.dart';
 import 'package:google_vision/google_vision.dart';
-import 'package:google_vision/google_vision_cli.dart';
+import 'package:google_vision_cli/google_vision_cli.dart';
 
 /// SafeSearch Detection detects explicit content such as adult content or
 /// violent content within an image.

@@ -1,0 +1,93 @@
+name: Build and Release Homebrew Binaries
+
+on:
+  push:
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+*'
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Tag to build from'
+        required: true
+        type: string
+
+jobs:
+  build:
+    name: Build ${{ matrix.target }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: macos-latest
+            target: macos-arm64
+            dart-arch: arm64
+          - os: macos-13
+            target: macos-x64
+            dart-arch: x64
+          - os: ubuntu-latest
+            target: linux-x64
+            dart-arch: x64
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.tag || github.ref }}
+
+      - name: Setup Dart
+        uses: dart-lang/setup-dart@v1
+        with:
+          architecture: ${{ matrix.dart-arch }}
+
+      - name: Install dependencies
+        run: dart pub get
+
+      - name: Compile binary
+        run: |
+          dart compile exe packages/google_vision_cli/bin/vision.dart \
+            -o vision-${{ matrix.target }}
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: vision-${{ matrix.target }}
+          path: vision-${{ matrix.target }}
+
+  release:
+    name: Create GitHub Release
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+
+      - name: Prepare binaries for release
+        run: |
+          mkdir -p release
+          cp artifacts/vision-macos-arm64/vision-macos-arm64 release/vision-darwin-arm64
+          cp artifacts/vision-macos-x64/vision-macos-x64 release/vision-darwin-amd64
+          cp artifacts/vision-linux-x64/vision-linux-x64 release/vision-linux-amd64
+          chmod +x release/*
+
+      - name: Generate SHA256 checksums
+        run: |
+          cd release
+          shasum -a 256 * > checksums.txt
+          cat checksums.txt
+
+      - name: Create/Update Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.event.inputs.tag || github.ref_name }}
+          files: |
+            release/vision-darwin-arm64
+            release/vision-darwin-amd64
+            release/vision-linux-amd64
+            release/checksums.txt
+          generate_release_notes: true
+          draft: false

@@ -1,5 +1,5 @@
 name: google_vision_workspace
-repository: https://github.com/faithoflifedev/google_vision_workspace
+repository: https://github.com/cdavis-code/google_vision_workspace
 
 packages:
   - packages/**
@@ -7,6 +7,7 @@ packages:
 categories:
   document:
     - packages/google_vision
+    - packages/google_vision_cli
     - packages/google_vision_flutter
 
 

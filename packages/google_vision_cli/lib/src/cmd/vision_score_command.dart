@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:args/command_runner.dart';
 import 'package:dio/dio.dart';
 import 'package:google_vision/google_vision.dart';
-import 'package:google_vision/google_vision_cli.dart';
+import 'package:google_vision_cli/google_vision_cli.dart';
 
 /// For OBJECT_LOCALIZATION, get the score(s) for the object specified with
 /// "look-for".

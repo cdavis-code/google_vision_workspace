@@ -1,5 +1,5 @@
 import 'package:args/command_runner.dart';
-import 'package:google_vision/meta.dart';
+import 'package:google_vision_cli/meta.dart';
 
 class VisionVersionCommand extends Command {
   @override

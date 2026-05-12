@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 200">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1a73e8"/>
+      <stop offset="50%" stop-color="#4285f4"/>
+      <stop offset="100%" stop-color="#174ea6"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ea4335"/>
+      <stop offset="33%" stop-color="#fbbc04"/>
+      <stop offset="66%" stop-color="#34a853"/>
+      <stop offset="100%" stop-color="#4285f4"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="200" rx="12" fill="url(#bg)"/>
+  <!-- Terminal icon -->
+  <g transform="translate(48, 50)" opacity="0.95">
+    <rect x="0" y="0" width="72" height="72" rx="12" fill="#0d1117"/>
+    <text x="12" y="26" font-family="monospace" font-size="14" fill="#34a853" font-weight="bold">$</text>
+    <text x="36" y="26" font-family="monospace" font-size="14" fill="#e6edf3">vision</text>
+    <text x="12" y="46" font-family="monospace" font-size="14" fill="#e6edf3">detect</text>
+    <text x="12" y="64" font-family="monospace" font-size="14" fill="#fbbc04">--features</text>
+    <rect x="10" y="10" width="52" height="52" rx="10" fill="none" stroke="#30363d" stroke-width="1"/>
+  </g>
+  <!-- Eye icon -->
+  <g transform="translate(155, 72)" opacity="0.85">
+    <ellipse cx="22" cy="22" rx="18" ry="8" fill="none" stroke="#fff" stroke-width="2.5"/>
+    <circle cx="22" cy="22" r="6" fill="#fff"/>
+    <circle cx="22" cy="22" r="3" fill="#1a73e8"/>
+  </g>
+  <!-- Title -->
+  <text x="230" y="80" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="36" font-weight="600" fill="#ffffff">Google Vision CLI</text>
+  <!-- Subtitle -->
+  <text x="230" y="118" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="18" fill="#abc7f8">Image detection &amp; annotation from the terminal</text>
+  <!-- Bottom accent bar -->
+  <rect x="48" y="152" width="704" height="3" rx="1.5" fill="url(#accent)" opacity="0.6"/>
+  <!-- Feature tags -->
+  <g transform="translate(48, 168)" font-family="monospace" font-size="12" fill="#abc7f8" opacity="0.8">
+    <rect x="0" y="-10" width="84" height="22" rx="6" fill="#ffffff" opacity="0.12"/>
+    <text x="10" y="5">LABEL</text>
+    <rect x="94" y="-10" width="70" height="22" rx="6" fill="#ffffff" opacity="0.12"/>
+    <text x="104" y="5">FACE</text>
+    <rect x="174" y="-10" width="70" height="22" rx="6" fill="#ffffff" opacity="0.12"/>
+    <text x="184" y="5">OCR</text>
+    <rect x="254" y="-10" width="64" height="22" rx="6" fill="#ffffff" opacity="0.12"/>
+    <text x="264" y="5">LOGO</text>
+    <rect x="328" y="-10" width="100" height="22" rx="6" fill="#ffffff" opacity="0.12"/>
+    <text x="338" y="5">LANDMARK</text>
+    <rect x="438" y="-10" width="98" height="22" rx="6" fill="#ffffff" opacity="0.12"/>
+    <text x="448" y="5">SAFE SEARCH</text>
+    <rect x="546" y="-10" width="116" height="22" rx="6" fill="#ffffff" opacity="0.12"/>
+    <text x="556" y="5">WEB DETECTION</text>
+  </g>
+</svg>
