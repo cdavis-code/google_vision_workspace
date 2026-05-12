@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="google_vision_cli API docs, for the Dart programming language.">
+  <title>google_vision_cli - Dart API docs</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+  
+  <link rel="stylesheet" href="static-assets/github.css?v1">
+  <link rel="stylesheet" href="static-assets/styles.css?v1">
+  <link rel="icon" href="static-assets/favicon.png?v1">
+  
+</head>
+
+<body data-base-href="" data-using-base-href="false" class="light-theme">
+<div id="overlay-under-drawer"></div>
+<header id="title">
+  <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="https://github.com/cdavis-code/google_vision_workspace/tree/main/packages/google_vision_cli">google_vision_cli package</a></li>
+  </ol>
+  <div class="self-name">google_vision_cli</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+  <button class="toggle" id="theme-button" title="Toggle between light and dark mode" aria-label="Light and dark mode toggle">
+    <span id="dark-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      dark_mode
+    </span>
+    <span id="light-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      light_mode
+    </span>
+  </button>
+</header>
+<main>
+  <div id="dartdoc-main-content" class="main-content">
+      
+<section class="desc markdown">
+  <h1 id="google-vision-cli">Google Vision CLI</h1>
+<p><a href="https://pub.dartlang.org/packages/google_vision_cli"><img src="https://img.shields.io/pub/v/google_vision_cli.svg" alt="pub package"></a></p>
+<img src="images/banner.svg" alt="Google Vision CLI banner" width="100%">
+<p>A command-line interface for the Google Vision API. Wraps the <a href="https://pub.dev/packages/google_vision"><code>google_vision</code></a> Dart package to provide image detection and annotation from the terminal.</p>
+<h2 id="quick-start">Quick Start</h2>
+<pre class="language-sh"><code class="language-sh"># Install via Homebrew
+brew tap faithoflifedev/google-vision
+brew install vision
+
+# Run landmark detection
+vision detect --image-file photo.jpg --features LANDMARK_DETECTION
+</code></pre>
+<h2 id="installation">Installation</h2>
+<h3 id="homebrew">Homebrew</h3>
+<pre class="language-sh"><code class="language-sh">brew tap faithoflifedev/google-vision
+brew install vision
+</code></pre>
+<h3 id="dart-pub">Dart pub</h3>
+<pre class="language-sh"><code class="language-sh"># Activate globally
+dart pub global activate google_vision_cli
+
+# Or run directly from the workspace
+dart run vision &lt;command&gt; [arguments]
+</code></pre>
+<h2 id="prerequisites">Prerequisites</h2>
+<ul>
+<li>A Google Cloud service account with the Vision API enabled</li>
+<li>A JSON credentials file for the service account</li>
+</ul>
+<h2 id="authentication">Authentication</h2>
+<p>The CLI authenticates via <strong>JWT only</strong> using a service account key file (API keys are not supported).</p>
+<pre class="language-sh"><code class="language-sh"># Place credentials at the default path
+~/.vision/credentials.json
+
+# Or specify a custom path
+dart run vision --credential-file /path/to/credentials.json &lt;command&gt;
+</code></pre>
+<h2 id="usage">Usage</h2>
+<pre class="language-sh"><code class="language-sh">dart run vision [global-options] &lt;command&gt; [command-options]
+</code></pre>
+<h2 id="global-options">Global Options</h2>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--credential-file</code></td>
+<td><code>~/.vision/credentials.json</code></td>
+<td>Path to JWT credentials JSON file</td>
+</tr>
+<tr>
+<td><code>--log-level</code></td>
+<td><code>off</code></td>
+<td>Log level: <code>all</code>, <code>debug</code>, <code>info</code>, <code>warning</code>, <code>error</code>, <code>off</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="commands">Commands</h2>
+<h3 id="version"><code>version</code></h3>
+<p>Display the package name and version.</p>
+<pre class="language-sh"><code class="language-sh">dart run vision version
+</code></pre>
+<h3 id="detect"><code>detect</code></h3>
+<p>Run image detection and annotation for a batch of images or files.</p>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--image-file</code></td>
+<td>yes</td>
+<td>Path to the image file to process</td>
+</tr>
+<tr>
+<td><code>--features</code></td>
+<td>yes</td>
+<td>Comma-separated list of <a href="#feature-types">detection types</a></td>
+</tr>
+<tr>
+<td><code>--pages</code></td>
+<td>no</td>
+<td>Comma-separated list of page numbers for PDF/TIFF/GIF (max 5)</td>
+</tr>
+<tr>
+<td><code>--max-results</code></td>
+<td>no</td>
+<td>Maximum results per feature (default: 10, max: 50)</td>
+</tr>
+</tbody>
+</table>
+<pre class="language-sh"><code class="language-sh"># Label detection on an image
+dart run vision detect --image-file photo.jpg --features LABEL_DETECTION
+
+# Multiple features on a single image
+dart run vision detect --image-file photo.jpg \
+  --features LABEL_DETECTION,FACE_DETECTION,TEXT_DETECTION
+
+# Process specific pages of a PDF
+dart run vision detect --image-file document.pdf \
+  --features DOCUMENT_TEXT_DETECTION --pages 1,2,3
+</code></pre>
+<h3 id="crop_hints"><code>crop_hints</code></h3>
+<p>Get crop suggestion vertices for an image.</p>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--image-file</code></td>
+<td>yes</td>
+<td>Path to the image file to process</td>
+</tr>
+<tr>
+<td><code>--aspect-ratios</code></td>
+<td>no</td>
+<td>Comma-separated list of aspect ratios as floats (e.g. <code>1.33333</code> for 4:3)</td>
+</tr>
+<tr>
+<td><code>--pages</code></td>
+<td>no</td>
+<td>Comma-separated list of page numbers for PDF/TIFF/GIF (max 5)</td>
+</tr>
+</tbody>
+</table>
+<pre class="language-sh"><code class="language-sh"># Get default crop hints
+dart run vision crop_hints --image-file photo.jpg
+
+# Specify desired aspect ratios
+dart run vision crop_hints --image-file photo.jpg \
+  --aspect-ratios 1.33333,1.77778
+</code></pre>
+<h3 id="safe_search"><code>safe_search</code></h3>
+<p>Detect explicit content (adult, violence, medical, racy) in an image.</p>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--image-file</code></td>
+<td>yes</td>
+<td>Path to the image file to process</td>
+</tr>
+</tbody>
+</table>
+<pre class="language-sh"><code class="language-sh">dart run vision safe_search --image-file photo.jpg
+</code></pre>
+<h3 id="highlight"><code>highlight</code></h3>
+<p>Draw bounding boxes around detected objects and save the result.</p>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--image-file</code></td>
+<td>yes</td>
+<td>Path to the image file to process</td>
+</tr>
+<tr>
+<td><code>--output-file</code></td>
+<td>yes</td>
+<td>Path to save the annotated image</td>
+</tr>
+<tr>
+<td><code>--features</code></td>
+<td>no</td>
+<td>Comma-separated list of <a href="#feature-types">detection types</a></td>
+</tr>
+<tr>
+<td><code>--line-color</code></td>
+<td>no</td>
+<td>Box color: <code>red</code>, <code>green</code>, <code>blue</code>, <code>white</code>, <code>black</code> (default: <code>red</code>)</td>
+</tr>
+<tr>
+<td><code>--max-results</code></td>
+<td>no</td>
+<td>Maximum results per feature (default: 10, max: 50)</td>
+</tr>
+</tbody>
+</table>
+<pre class="language-sh"><code class="language-sh"># Highlight detected faces
+dart run vision highlight --image-file photo.jpg \
+  --output-file annotated.jpg --features FACE_DETECTION
+
+# Highlight objects and landmarks in blue
+dart run vision highlight --image-file photo.jpg \
+  --output-file annotated.jpg \
+  --features OBJECT_LOCALIZATION,LANDMARK_DETECTION \
+  --line-color blue
+</code></pre>
+<h3 id="score"><code>score</code></h3>
+<p>Get confidence scores for detected objects as a JSON array.</p>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--image-file</code></td>
+<td>yes</td>
+<td>Path to the image file to process</td>
+</tr>
+<tr>
+<td><code>--features</code></td>
+<td>no</td>
+<td>Comma-separated list of <a href="#feature-types">detection types</a></td>
+</tr>
+<tr>
+<td><code>--max-results</code></td>
+<td>no</td>
+<td>Maximum results per feature (default: 10, max: 50)</td>
+</tr>
+</tbody>
+</table>
+<pre class="language-sh"><code class="language-sh"># Get face detection confidence scores
+dart run vision score --image-file photo.jpg \
+  --features FACE_DETECTION
+
+# Get label detection scores
+dart run vision score --image-file photo.jpg \
+  --features LABEL_DETECTION
+
+# Output: [0.98, 0.95, 0.87, ...]
+</code></pre>
+<h2 id="feature-types">Feature Types</h2>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>FACE_DETECTION</code></td>
+<td>Detect faces with facial attributes</td>
+</tr>
+<tr>
+<td><code>LANDMARK_DETECTION</code></td>
+<td>Detect popular landmarks</td>
+</tr>
+<tr>
+<td><code>LOGO_DETECTION</code></td>
+<td>Detect product logos</td>
+</tr>
+<tr>
+<td><code>LABEL_DETECTION</code></td>
+<td>Label image content (objects, activities, etc.)</td>
+</tr>
+<tr>
+<td><code>TEXT_DETECTION</code></td>
+<td>OCR — detect and extract text</td>
+</tr>
+<tr>
+<td><code>DOCUMENT_TEXT_DETECTION</code></td>
+<td>Dense text/document OCR with page/block/paragraph structure</td>
+</tr>
+<tr>
+<td><code>SAFE_SEARCH_DETECTION</code></td>
+<td>Adult/violent/explicit content likelihood</td>
+</tr>
+<tr>
+<td><code>IMAGE_PROPERTIES</code></td>
+<td>Dominant colors and image attributes</td>
+</tr>
+<tr>
+<td><code>CROP_HINTS</code></td>
+<td>Suggested crop region vertices</td>
+</tr>
+<tr>
+<td><code>WEB_DETECTION</code></td>
+<td>Web references and similar images</td>
+</tr>
+<tr>
+<td><code>PRODUCT_SEARCH</code></td>
+<td>Product search against a product set</td>
+</tr>
+<tr>
+<td><code>OBJECT_LOCALIZATION</code></td>
+<td>Detect and locate multiple objects</td>
+</tr>
+</tbody>
+</table>
+<p>See the <a href="https://cloud.google.com/vision/docs/reference/rest/v1/Feature#Type">Google Vision API documentation</a> for details.</p>
+<h2 id="license">License</h2>
+<p>This project is licensed under the terms included in the repository.</p>
+</section>
+
+
+      <section class="summary">
+          <h2>Libraries</h2>
+        <dl>
+          <dt id="google_vision_cli">
+  <span class="name"><a href="google_vision_cli/">google_vision_cli</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="meta">
+  <span class="name"><a href="meta/">meta</a></span> 
+
+</dt>
+<dd>app metadata
+</dd>
+
+        </dl>
+      </section>
+  </div> <!-- /.main-content -->
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
+<header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+    <li><a href="https://github.com/cdavis-code/google_vision_workspace/tree/main/packages/google_vision_cli">google_vision_cli package</a></li>
+</ol>
+
+    <h5 class="hidden-xs"><span class="package-name">google_vision_cli</span> <span class="package-kind">package</span></h5>
+    <ol>
+      <li class="section-title">Libraries</li>
+      <li><a href="google_vision_cli/">google_vision_cli</a></li>
+      <li><a href="meta/">meta</a></li>
+</ol>
+
+  </div>
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+  </div>
+</main>
+<footer>
+  <span class="no-break">
+    google_vision_cli
+      2.0.0+12
+  </span>
+  
+</footer>
+
+
+<script src="static-assets/highlight.pack.js?v1"></script>
+<script src="static-assets/docs.dart.js"></script>
+
+</body>
+</html>
+

@@ -2,9 +2,29 @@
 
 [![pub package](https://img.shields.io/pub/v/google_vision_cli.svg)](https://pub.dartlang.org/packages/google_vision_cli)
 
-<img src="images/banner.svg" alt="Google Vision CLI banner" width="100%" />
+<img src="https://raw.githubusercontent.com/cdavis-code/google_vision_workspace/main/packages/google_vision_cli/images/banner.svg" alt="Google Vision CLI banner" width="100%" />
 
 A command-line interface for the Google Vision API. Wraps the [`google_vision`](https://pub.dev/packages/google_vision) Dart package to provide image detection and annotation from the terminal.
+
+## Table of Contents
+
+- [Quick Start](#quick-start)
+- [Installation](#installation)
+  - [Homebrew](#homebrew)
+  - [Dart pub](#dart-pub)
+- [Prerequisites](#prerequisites)
+- [Authentication](#authentication)
+- [Usage](#usage)
+- [Global Options](#global-options)
+- [Commands](#commands)
+  - [`version`](#version)
+  - [`detect`](#detect)
+  - [`crop_hints`](#crop_hints)
+  - [`safe_search`](#safe_search)
+  - [`highlight`](#highlight)
+  - [`score`](#score)
+- [Feature Types](#feature-types)
+- [License](#license)
 
 ## Quick Start
 

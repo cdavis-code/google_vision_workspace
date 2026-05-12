@@ -29,7 +29,10 @@ void main(List<String> arguments) async {
     ..addCommand(VisionScoreCommand())
     ..addCommand(VisionVersionCommand())
     ..run(arguments).catchError((error) {
-      if (error is! UsageException) throw error;
+      if (error is! UsageException) {
+        stderr.writeln('Error: $error');
+        exit(70); // Exit code 70 indicates internal software error.
+      }
 
       print(error);
 

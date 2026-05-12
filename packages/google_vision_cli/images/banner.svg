@@ -15,15 +15,15 @@
   <rect width="800" height="200" rx="12" fill="url(#bg)"/>
   <!-- Terminal icon -->
   <g transform="translate(48, 50)" opacity="0.95">
-    <rect x="0" y="0" width="72" height="72" rx="12" fill="#0d1117"/>
+    <rect x="0" y="0" width="110" height="84" rx="12" fill="#0d1117"/>
     <text x="12" y="26" font-family="monospace" font-size="14" fill="#34a853" font-weight="bold">$</text>
     <text x="36" y="26" font-family="monospace" font-size="14" fill="#e6edf3">vision</text>
     <text x="12" y="46" font-family="monospace" font-size="14" fill="#e6edf3">detect</text>
     <text x="12" y="64" font-family="monospace" font-size="14" fill="#fbbc04">--features</text>
-    <rect x="10" y="10" width="52" height="52" rx="10" fill="none" stroke="#30363d" stroke-width="1"/>
+    <rect x="8" y="10" width="94" height="64" rx="10" fill="none" stroke="#30363d" stroke-width="1"/>
   </g>
   <!-- Eye icon -->
-  <g transform="translate(155, 72)" opacity="0.85">
+  <g transform="translate(172, 72)" opacity="0.85">
     <ellipse cx="22" cy="22" rx="18" ry="8" fill="none" stroke="#fff" stroke-width="2.5"/>
     <circle cx="22" cy="22" r="6" fill="#fff"/>
     <circle cx="22" cy="22" r="3" fill="#1a73e8"/>

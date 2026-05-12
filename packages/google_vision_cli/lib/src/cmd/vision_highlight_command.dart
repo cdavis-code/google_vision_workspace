@@ -89,7 +89,16 @@ class VisionHighlightCommand extends VisionHelper {
 
       final annotatedResponses = await annotateImage();
 
-      final img.Image decodedBytes = img.decodeImage(imageBytes)!;
+      final img.Image? decodedImage = img.decodeImage(imageBytes);
+
+      if (decodedImage == null) {
+        throw UsageException(
+          'Unable to decode image:',
+          'The file may be corrupted or in an unsupported format.',
+        );
+      }
+
+      final img.Image decodedBytes = decodedImage;
 
       for (var annotatedResponse in annotatedResponses.responses) {
         // check for faces

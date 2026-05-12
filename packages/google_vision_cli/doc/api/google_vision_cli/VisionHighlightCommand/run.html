@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="API docs for the run method from the VisionHighlightCommand class, for the Dart programming language.">
+  <title>run method - VisionHighlightCommand class - google_vision_cli library - Dart API</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../../static-assets/github.css?v1">
+  <link rel="stylesheet" href="../../static-assets/styles.css?v1">
+  <link rel="icon" href="../../static-assets/favicon.png?v1">
+  
+</head>
+
+<body data-base-href="../../" data-using-base-href="false" class="light-theme">
+<div id="overlay-under-drawer"></div>
+<header id="title">
+  <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="../../index.html">google_vision_cli</a></li>
+    <li><a href="../../google_vision_cli/">google_vision_cli.dart</a></li>
+    <li><a href="../../google_vision_cli/VisionHighlightCommand-class.html">VisionHighlightCommand</a></li>
+    <li class="self-crumb">run method</li>
+  </ol>
+  <div class="self-name">run</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+  <button class="toggle" id="theme-button" title="Toggle between light and dark mode" aria-label="Light and dark mode toggle">
+    <span id="dark-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      dark_mode
+    </span>
+    <span id="light-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      light_mode
+    </span>
+  </button>
+</header>
+<main>
+<div
+    id="dartdoc-main-content"
+    class="main-content"
+    data-above-sidebar="google_vision_cli&#47;VisionHighlightCommand-class-sidebar.html"
+    data-below-sidebar="">
+    <div>
+<h1><span class="kind-method">run</span> method 
+</h1></div>
+
+    <section class="multi-line-signature">
+      
+  <div>
+    <ol class="annotation-list">
+        <li>@<a href="https://api.flutter.dev/flutter/dart-core/override-constant.html">override</a></li>
+    </ol>
+  </div>
+<span class="returntype">void</span>
+<span class="name ">run</span>(<wbr>)
+
+      <div class="features"><span class="feature">override</span></div>
+
+    </section>
+    
+<section class="desc markdown">
+  <p>Runs this command.</p>
+<p>The return value is wrapped in a <code>Future</code> if necessary and returned by
+<a href="https://pub.dev/documentation/args/2.7.0/command_runner/CommandRunner/runCommand.html">CommandRunner.runCommand</a>.</p>
+</section>
+
+
+    
+<section class="summary source-code" id="source">
+  <h2><span>Implementation</span></h2>
+  <pre class="language-dart"><code class="language-dart">@override
+void run() async {
+  try {
+    await initializeGoogleVision();
+
+    final annotatedResponses = await annotateImage();
+
+    final img.Image? decodedImage = img.decodeImage(imageBytes);
+
+    if (decodedImage == null) {
+      throw UsageException(
+        &#39;Unable to decode image:&#39;,
+        &#39;The file may be corrupted or in an unsupported format.&#39;,
+      );
+    }
+
+    final img.Image decodedBytes = decodedImage;
+
+    for (var annotatedResponse in annotatedResponses.responses) {
+      &#47;&#47; check for faces
+      for (var faceAnnotation in annotatedResponse.faceAnnotations) {
+        img.drawString(
+          decodedBytes,
+          &#39;Face - ${faceAnnotation.detectionConfidence}&#39;,
+          font: img.arial14,
+          x: faceAnnotation.boundingPoly.vertices.first.x + 2,
+          y:
+              faceAnnotation.boundingPoly.vertices.first.y *
+                  decodedBytes.height +
+              2,
+          color: Util.convertColorNameToImageColor(argResults![&#39;line-color&#39;]),
+        );
+
+        drawAnnotations(
+          vertices: faceAnnotation.boundingPoly.vertices,
+          image: decodedBytes,
+          color: Util.convertColorNameToImageColor(argResults![&#39;line-color&#39;]),
+        );
+      }
+
+      var textOffset = 0;
+
+      &#47;&#47; check for landmarks
+      for (var landmarkAnnotation in annotatedResponse.landmarkAnnotations) {
+        img.drawString(
+          decodedBytes,
+          &#39;${landmarkAnnotation.description} - ${landmarkAnnotation.score}&#39;,
+          font: img.arial14,
+          x: landmarkAnnotation.boundingPoly!.vertices.first.x + 4,
+          y:
+              landmarkAnnotation.boundingPoly!.vertices.first.y *
+                  decodedBytes.height +
+              4 +
+              textOffset,
+          color: Util.convertColorNameToImageColor(argResults![&#39;line-color&#39;]),
+        );
+
+        &#47;&#47; move the text down a bit
+        textOffset += 16;
+
+        drawAnnotations(
+          vertices: landmarkAnnotation.boundingPoly!.vertices,
+          image: decodedBytes,
+          color: Util.convertColorNameToImageColor(argResults![&#39;line-color&#39;]),
+        );
+      }
+
+      &#47;&#47; check for objects
+      for (var localizedObjectAnnotation
+          in annotatedResponse.localizedObjectAnnotations) {
+        img.drawString(
+          decodedBytes,
+          &#39;${localizedObjectAnnotation.name} - ${localizedObjectAnnotation.score}&#39;,
+          font: img.arial14,
+          x:
+              (localizedObjectAnnotation
+                          .boundingPoly!
+                          .normalizedVertices
+                          .first
+                          .x *
+                      decodedBytes.width)
+                  .toInt(),
+          y:
+              (localizedObjectAnnotation
+                          .boundingPoly!
+                          .normalizedVertices
+                          .first
+                          .y *
+                      decodedBytes.height)
+                  .toInt() -
+              16,
+          color: Util.convertColorNameToImageColor(argResults![&#39;line-color&#39;]),
+        );
+
+        drawAnnotations(
+          vertices: localizedObjectAnnotation.boundingPoly!.vertices,
+          image: decodedBytes,
+          color: Util.convertColorNameToImageColor(argResults![&#39;line-color&#39;]),
+          isNormalized: true,
+        );
+      }
+    }
+
+    await img.encodeJpgFile(argResults![&#39;output-file&#39;], decodedBytes);
+  } on DioException catch (err) {
+    throw UsageException(&#39;API usage error:&#39;, err.usage);
+  }
+}</code></pre>
+</section>
+
+
+  </div> <!-- /.main-content -->
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
+<header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+    <li><a href="../../index.html">google_vision_cli</a></li>
+    <li><a href="../../google_vision_cli/">google_vision_cli</a></li>
+    <li><a href="../../google_vision_cli/VisionHighlightCommand-class.html">VisionHighlightCommand</a></li>
+    <li class="self-crumb">run method</li>
+</ol>
+
+    <h5>VisionHighlightCommand class</h5>
+    <div id="dartdoc-sidebar-left-content"></div>
+  </div><!--/.sidebar-offcanvas-->
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+</div><!--/.sidebar-offcanvas-->
+</main>
+<footer>
+  <span class="no-break">
+    google_vision_cli
+      2.0.0+12
+  </span>
+  
+</footer>
+
+
+<script src="../../static-assets/highlight.pack.js?v1"></script>
+<script src="../../static-assets/docs.dart.js"></script>
+
+</body>
+</html>
+
