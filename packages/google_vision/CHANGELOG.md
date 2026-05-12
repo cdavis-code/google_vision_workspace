@@ -1,5 +1,13 @@
 # Changelog
 
+## 2.0.0+11
+
+* security fixes: auth header logging disabled, API key moved to headers
+* security: redact private key from `toString()` output
+* security: typed exceptions replace generic `Exception` throws
+* security: buffer size validation for image/file inputs
+* repository migration to `cdavis-code`
+
 ## 2.0.0+10
 
 * pub.dev update

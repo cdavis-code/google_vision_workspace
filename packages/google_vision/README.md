@@ -26,11 +26,11 @@ Native [Dart](https://dart.dev/) package that integrates Google Vision features,
 
 ## Project Status
 
-[![Build Status](https://github.com/faithoflifedev/google_vision/workflows/Dart/badge.svg)](https://github.com/faithoflifedev/google_vision/actions) [![github last commit](https://shields.io/github/last-commit/faithoflifedev/google_vision)](https://shields.io/github/last-commit/faithoflifedev/google_vision) [![github build](https://img.shields.io/github/actions/workflow/status/faithoflifedev/google_vision_workspace/dart.yaml?branch=main)](https://shields.io/github/workflow/status/faithoflifedev/google_vision/Dart) [![github issues](https://shields.io/github/issues/faithoflifedev/google_vision)](https://shields.io/github/issues/faithoflifedev/google_vision)
+[![Build Status](https://github.com/cdavis-code/google_vision_workspace/workflows/Dart/badge.svg)](https://github.com/cdavis-code/google_vision_workspace/actions) [![github last commit](https://shields.io/github/last-commit/cdavis-code/google_vision_workspace)](https://shields.io/github/last-commit/cdavis-code/google_vision_workspace) [![github build](https://img.shields.io/github/actions/workflow/status/cdavis-code/google_vision_workspace/dart.yaml?branch=main)](https://shields.io/github/workflow/status/cdavis-code/google_vision_workspace/Dart) [![github issues](https://shields.io/github/issues/cdavis-code/google_vision_workspace)](https://shields.io/github/issues/cdavis-code/google_vision_workspace)
 
-[![Buy me a coffee](https://www.buymeacoffee.com/assets/img/guidelines/download-assets-1.svg)](https://www.buymeacoffee.com/faithoflif2)
+[![Buy me a coffee](https://www.buymeacoffee.com/assets/img/guidelines/download-assets-1.svg)](https://www.buymeacoffee.com/cdavis)
 
-Please feel free to submit PRs for any additional helper methods, or report an [issue](https://github.com/faithoflifedev/google_vision/issues) for a missing helper method and I'll add it if I have time available.
+Please feel free to submit PRs for any additional helper methods, or report an [issue](https://github.com/cdavis-code/google_vision_workspace/issues) for a missing helper method and I'll add it if I have time available.
 
 ## Recent Changes
 
@@ -67,7 +67,7 @@ To use this package, add the dependency to your `pubspec.yaml` file:
 ```yaml
 dependencies:
   ...
-  google_vision: ^2.0.0+10
+  google_vision: ^2.0.0+11
 ```
 
 ### Obtaining Authentication/Authorization Credentials
@@ -124,18 +124,25 @@ print('done.');
 
 ## Usage with Flutter
 
-For a quick intro into the use of Google Vision in a Flutter, take a look at the [`google_vision_flutter`](https://github.com/faithoflifedev/google_vision_workspace/tree/main/packages/google_vision_flutter) package and the [example](https://github.com/faithoflifedev/google_vision_workspace/tree/main/packages/google_vision_flutter/example) folder of the project's GitHub repository.
+For a quick intro into the use of Google Vision in a Flutter, take a look at the [`google_vision_flutter`](https://github.com/cdavis-code/google_vision_workspace/tree/main/packages/google_vision_flutter) package and the [example](https://github.com/cdavis-code/google_vision_workspace/tree/main/packages/google_vision_flutter/example) folder of the project's GitHub repository.
 
 If Flutter specific Google Vision Widget doesn't meet your requirements, then to work with Flutter it's usually necessary to convert an object that is presented as an `Asset` or a `Stream` into a `File` for use by this `google_vision` package.  This [StackOverflow](https://stackoverflow.com/questions/55295593/how-to-convert-asset-image-to-file) post gives an idea on how this can be accomplished.  A similar process can be used for any `Stream` of data that represents an image supported by `google_vision`.  Essentially, the Google Vision REST API needs to be able to convert the image data into its Base64 representation before submitting it to the Google server and having the `bytedata` available in the code makes this easier. 
 
 ## Vision cli (google_vision at the command prompt)
 
-This package included a cli utility that can be used to return data for any API call currently supported by the package. If you want to get started quickly with the cli utility run these commands in a terminal session:
+This package includes a companion CLI package [`google_vision_cli`](https://pub.dev/packages/google_vision_cli) that can be used to return data for any API call currently supported by the package. If you want to get started quickly with the cli utility:
 
 Install using `dart pub`:
 
 ```sh
-dart pub global activate google_vision
+dart pub global activate google_vision_cli
+```
+
+Or install via Homebrew:
+
+```sh
+brew tap cdavis-code/google-vision
+brew install vision
 ```
 
 Run the following command to see help:
@@ -144,26 +151,7 @@ Run the following command to see help:
 vision --help
 ```
 
-Result,
-
-```text
-A command line interface for making API requests to the Google Vision.
-
-Usage: vision <command> [arguments]
-
-Global options:
--h, --help                                       Print this usage information.
-    --credential-file=<credentials file path>    (defaults to "/Users/chris/.vision/credentials.json")
-
-Available commands:
-  crop_hints  Set of crop hints that are used to generate new crops when serving images.
-  detect      Run image detection and annotation for an images.
-  highlight   Draw a box to highlight any objects detected.
-  safe_search SafeSearch Detection detects explicit content such as adult content or violent content within an image.
-  score       For OBJECT_LOCALIZATION, get the score(s) for the object specified with "look-for".
-```
-
-Please see the cli documentation [README.md](https://github.com/faithoflifedev/google_vision/tree/main/bin) for more detailed usage information.
+Please see the [google_vision_cli documentation](https://github.com/cdavis-code/google_vision_workspace/tree/main/packages/google_vision_cli) for more detailed usage information.
 
 ## Reference
 
