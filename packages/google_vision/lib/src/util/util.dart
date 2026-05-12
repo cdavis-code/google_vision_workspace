@@ -50,7 +50,7 @@ class Util {
     final locationUri = Uri.parse(locationUrl);
 
     if (!locationUri.queryParameters.containsKey('upload_id')) {
-      throw Exception('The upload ID has not been found.');
+      throw ArgumentError('The upload ID has not been found.');
     }
 
     return locationUri.queryParameters['upload_id']!;
@@ -80,7 +80,7 @@ class Util {
       }
     }
 
-    throw Exception('image format unknown');
+    throw ArgumentError('Image format unknown');
   }
 
   static img.Image? bmpDecode(Uint8List bytes, {int? frame}) =>
@@ -104,5 +104,5 @@ class Util {
   static img.Color convertColorNameToImageColor(String colorName) =>
       (colorMap.containsKey(colorName)
       ? colorMap[colorName]!
-      : throw Exception('Invalid color name'));
+      : throw ArgumentError('Invalid color name: $colorName'));
 }

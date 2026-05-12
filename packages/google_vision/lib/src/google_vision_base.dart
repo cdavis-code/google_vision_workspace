@@ -3,6 +3,8 @@ import 'package:flutter_loggy_dio/flutter_loggy_dio.dart';
 import 'package:google_vision/google_vision.dart';
 import 'package:loggy/loggy.dart';
 
+import 'authorization_exception.dart';
+
 /// Integrates Google Vision features, including painter labeling, face, logo,
 /// and landmark detection, optical character recognition (OCR), and detection
 /// of explicit content, into applications.
@@ -37,8 +39,8 @@ class GoogleVision with UiLoggy {
         LoggyDioInterceptor(
           requestBody: true,
           responseBody: true,
-          requestHeader: true,
-          responseHeader: true,
+          requestHeader: false,
+          responseHeader: false,
           requestLevel: logLevel,
           responseLevel: logLevel,
           errorLevel: logLevel,
@@ -99,13 +101,14 @@ class GoogleVision with UiLoggy {
     }
 
     if (_apiKey != null) {
-      dio.options.queryParameters['key'] = _apiKey;
+      dio.options.headers['X-Goog-Api-Key'] = _apiKey;
     }
   }
 
   Future<void> confirmToken() async {
     if (tokenGenerator == null) {
-      throw Exception();
+      throw AuthorizationException('Token generator not configured. '
+          'Call withApiKey(), withJwt(), or withGenerator() first.');
     } else {
       if (tokenExpiry.isBefore(DateTime.now())) {
         final tokenData = await tokenGenerator!.generate();

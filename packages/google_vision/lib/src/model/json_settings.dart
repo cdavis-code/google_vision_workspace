@@ -1,4 +1,3 @@
-import 'dart:convert' show json;
 import 'package:json_annotation/json_annotation.dart';
 
 part 'json_settings.g.dart';
@@ -54,5 +53,6 @@ class JsonSettings {
   Map<String, dynamic> toJson() => _$JsonSettingsToJson(this);
 
   @override
-  String toString() => json.encode(toJson());
+  String toString() => 'JsonSettings(type: $type, projectId: $projectId, '
+      'clientEmail: $clientEmail)';
 }

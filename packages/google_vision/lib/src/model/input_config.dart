@@ -6,6 +6,9 @@ import 'package:mime/mime.dart';
 import 'gcs_source.dart';
 
 class InputConfig {
+  /// Maximum file size supported by the Google Vision API (20 MB).
+  static const int maxContentBytes = 20 * 1024 * 1024;
+
   /// The Google Cloud Storage location to read the input from.
   final GcsSource? gcsSource;
 
@@ -36,11 +39,18 @@ class InputConfig {
       ? {'content': base64Encode(content!.asUint8List()), 'mimeType': mimeType}
       : {'gcsSource': gcsSource, 'mimeType': mimeType};
 
-  factory InputConfig.fromBuffer(ByteBuffer buffer, [String? mimeType]) =>
-      InputConfig(
-        content: buffer,
-        mimeType: mimeType ?? mimeTypeFromContent(buffer),
+  factory InputConfig.fromBuffer(ByteBuffer buffer, [String? mimeType]) {
+    if (buffer.lengthInBytes > maxContentBytes) {
+      throw ArgumentError(
+        'File size (${buffer.lengthInBytes} bytes) exceeds '
+        'the maximum allowed size of $maxContentBytes bytes.',
       );
+    }
+    return InputConfig(
+      content: buffer,
+      mimeType: mimeType ?? mimeTypeFromContent(buffer),
+    );
+  }
 
   factory InputConfig.fromGsUri(String gsUri) => InputConfig(
     gcsSource: GcsSource(uri: gsUri),

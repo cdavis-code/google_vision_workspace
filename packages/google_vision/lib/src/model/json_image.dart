@@ -3,6 +3,9 @@ import 'dart:typed_data';
 
 /// A class that holds the details of an image that can be converted to/from JSON.
 class JsonImage {
+  /// Maximum image size supported by the Google Vision API (20 MB).
+  static const int maxImageBytes = 20 * 1024 * 1024;
+
   final String? imageUri;
 
   final ByteBuffer? byteBuffer;
@@ -13,8 +16,15 @@ class JsonImage {
     }
   }
 
-  factory JsonImage.fromBuffer(ByteBuffer buffer) =>
-      JsonImage(byteBuffer: buffer);
+  factory JsonImage.fromBuffer(ByteBuffer buffer) {
+    if (buffer.lengthInBytes > maxImageBytes) {
+      throw ArgumentError(
+        'Image size (${buffer.lengthInBytes} bytes) exceeds '
+        'the maximum allowed size of $maxImageBytes bytes.',
+      );
+    }
+    return JsonImage(byteBuffer: buffer);
+  }
 
   factory JsonImage.fromGsUri(String gsUri) => JsonImage(imageUri: gsUri);
 
