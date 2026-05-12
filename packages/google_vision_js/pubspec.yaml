@@ -15,8 +15,6 @@ topics:
 funding:
   - https://www.buymeacoffee.com/cdavis
 
-resolution: workspace
-
 environment:
   sdk: ^3.8.0
 
