@@ -1,6 +1,6 @@
 {
   "name": "@unngh/google-vision",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Google Vision API client for Node.js and browsers — image labeling, face detection, OCR, safe search, and more. Compiled from Dart.",
   "license": "MIT",
   "author": "Chris Davis",
