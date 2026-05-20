@@ -1,0 +1,30 @@
+name: Create Release Tag
+
+# Workflow for step 6 of the google_vision_cli release: creates and pushes a git tag.
+# This triggers homebrew-release.yaml (binary builds + GitHub Release) and
+# homebrew-formula-update.yaml (Homebrew formula update) in parallel.
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to tag (e.g. 2.0.2 — "v" prefix is added automatically)'
+        required: true
+        type: string
+
+jobs:
+  tag:
+    name: Tag v${{ inputs.version }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Create and push tag
+        run: |
+          TAG="v${{ inputs.version }}"
+          git tag -a "$TAG" -m "google_vision_cli $TAG"
+          git push origin "$TAG"
+          echo "Created and pushed tag: $TAG"

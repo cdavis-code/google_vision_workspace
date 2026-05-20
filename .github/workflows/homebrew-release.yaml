@@ -1,5 +1,10 @@
 name: Build and Release Homebrew Binaries
 
+# Builds native binaries for all Dart-supported platforms and creates a GitHub
+# Release when a version tag is pushed. Runs in parallel with
+# homebrew-formula-update.yaml (Homebrew formula) and publish-pub-dev.yaml (pub.dev).
+# See create-tag.yaml for automated tag creation.
+
 on:
   push:
     tags:
@@ -22,12 +27,23 @@ jobs:
           - os: macos-latest
             target: macos-arm64
             dart-arch: arm64
+            binary-ext: ''
           - os: macos-13
             target: macos-x64
             dart-arch: x64
+            binary-ext: ''
           - os: ubuntu-latest
             target: linux-x64
             dart-arch: x64
+            binary-ext: ''
+          - os: ubuntu-24.04-arm
+            target: linux-arm64
+            dart-arch: arm64
+            binary-ext: ''
+          - os: windows-latest
+            target: windows-x64
+            dart-arch: x64
+            binary-ext: .exe
 
     steps:
       - name: Checkout
@@ -46,13 +62,13 @@ jobs:
       - name: Compile binary
         run: |
           dart compile exe packages/google_vision_cli/bin/vision.dart \
-            -o vision-${{ matrix.target }}
+            -o vision-${{ matrix.target }}${{ matrix.binary-ext }}
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: vision-${{ matrix.target }}
-          path: vision-${{ matrix.target }}
+          path: vision-${{ matrix.target }}${{ matrix.binary-ext }}
 
   release:
     name: Create GitHub Release
@@ -69,10 +85,15 @@ jobs:
       - name: Prepare binaries for release
         run: |
           mkdir -p release
+          # macOS
           cp artifacts/vision-macos-arm64/vision-macos-arm64 release/vision-darwin-arm64
           cp artifacts/vision-macos-x64/vision-macos-x64 release/vision-darwin-amd64
+          # Linux
           cp artifacts/vision-linux-x64/vision-linux-x64 release/vision-linux-amd64
-          chmod +x release/*
+          cp artifacts/vision-linux-arm64/vision-linux-arm64 release/vision-linux-arm64
+          # Windows (dart compile exe auto-appends .exe on Windows)
+          cp artifacts/vision-windows-x64/vision-windows-x64.exe release/vision-windows-amd64.exe
+          chmod +x release/vision-darwin-* release/vision-linux-*
 
       - name: Generate SHA256 checksums
         run: |
@@ -88,6 +109,8 @@ jobs:
             release/vision-darwin-arm64
             release/vision-darwin-amd64
             release/vision-linux-amd64
+            release/vision-linux-arm64
+            release/vision-windows-amd64.exe
             release/checksums.txt
           generate_release_notes: true
           draft: false
