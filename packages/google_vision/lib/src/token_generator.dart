@@ -1,9 +1,9 @@
 import 'dart:convert';
 
-import 'package:crypto_keys_plus/crypto_keys.dart';
+import 'package:crypto_keys/crypto_keys.dart';
 import 'package:dio/dio.dart';
 import 'package:google_vision/google_vision.dart';
-import 'package:jose_plus/jose.dart';
+import 'package:jose/jose.dart';
 // import 'package:universal_io/io.dart';
 
 abstract class TokenGenerator {
@@ -17,10 +17,14 @@ class JwtGenerator implements TokenGenerator {
 
   final JwtCredentials jwtCredentials;
 
+  /// OAuth token endpoint URL
+  final String tokenEndpoint;
+
   JwtGenerator({
     required String credentials,
     required String scope,
     required this.dio,
+    this.tokenEndpoint = 'https://www.googleapis.com/oauth2/v4/token',
   }) : jwtCredentials = JwtCredentials.fromJson({
          'settings': jsonDecode(credentials),
          'scope': scope,
@@ -54,7 +58,7 @@ class JwtGenerator implements TokenGenerator {
     final claim = Util.base64GCloudString('''{
       "iss": "${jwtCredentials.settings.clientEmail}",
       "scope": "${jwtCredentials.scope}",
-      "aud": "https://www.googleapis.com/oauth2/v4/token",
+      "aud": "$tokenEndpoint",
       "exp": ${Util.unixTimeStamp(now.add(Duration(minutes: 60)))},
       "iat": ${Util.unixTimeStamp(now)}
 }''');

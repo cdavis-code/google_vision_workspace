@@ -12,6 +12,7 @@ Native [Dart](https://dart.dev/) package that integrates Google Vision features,
 - [Google Vision Images REST API Client](#google-vision-images-rest-api-client)
   - [Project Status](#project-status)
   - [Recent Changes](#recent-changes)
+    - [New for v2.2.0](#new-for-v220)
     - [New for v2.0.0](#new-for-v200)
     - [New for v1.4.0](#new-for-v140)
     - [New for v1.3.0](#new-for-v130)
@@ -20,8 +21,10 @@ Native [Dart](https://dart.dev/) package that integrates Google Vision features,
     - [Obtaining Authentication/Authorization Credentials](#obtaining-authenticationauthorization-credentials)
     - [Usage of the Cloud Vision API](#usage-of-the-cloud-vision-api)
   - [New Helper Methods](#new-helper-methods)
+  - [Security & Best Practices](#security--best-practices)
   - [Usage with Flutter](#usage-with-flutter)
   - [Vision cli (google\_vision at the command prompt)](#vision-cli-google_vision-at-the-command-prompt)
+  - [Document → Markdown](#document--markdown)
   - [Reference](#reference)
   - [Contributors](#contributors)
   - [Contributing](#contributing)
@@ -36,12 +39,23 @@ Please feel free to submit PRs for any additional helper methods, or report an [
 
 ## Recent Changes
 
+### New for v2.2.0
+  - **Security enhancements**: Credential leakage prevention with secure logging interceptor that automatically redacts sensitive headers
+  - **Input validation**: All API methods now validate parameters (maxResults bounds, required fields)
+  - **Credential management**: New `clearCredentials()` method for secure logout and credential cleanup
+  - **Retry support**: `RetryUtility` class with exponential backoff for resilient API calls
+  - **Configurable OAuth**: JWT generator now supports custom OAuth endpoints for Google Cloud Enterprise
+  - **Bug fix**: Token expiry calculation corrected - tokens now refresh properly
+  - **Documentation**: Added Security & Best Practices section with code examples
+
 ### New for v2.0.0
   - Even though this package worked when used with the `web` platform the **pub.dev** analyzer would not show it as `web` platform compatible due to the use of the `universal_io` package which has a dependency on `dart:io`.  This version has removed the `universal_io` dependency from the core package, so some related method signatures have been removed.
   - The deprecated methods from in v1.3.x have been removed in this version.
   - Logging functionality has been added to the package
   ```dart
-  final googleVision = await GoogleVision(LogLevel.all).withJwtFile('service_credentials.json');
+  final googleVision = await GoogleVision(LogLevel.all).withJwt(
+    File('service_credentials.json').readAsStringSync(),
+  );
   ```
 
 ### New for v1.4.0
@@ -69,7 +83,7 @@ To use this package, add the dependency to your `pubspec.yaml` file:
 ```yaml
 dependencies:
   ...
-  google_vision: ^2.0.0+12
+  google_vision: ^2.2.0
 ```
 
 ### Obtaining Authentication/Authorization Credentials
@@ -124,6 +138,40 @@ print('done.');
 | Future<List\<EntityAnnotation>> **textDetection**(<br/>&nbsp;&nbsp;JsonImage jsonImage, <br/>&nbsp;&nbsp;{ImageContext? imageContext,<br/>&nbsp;&nbsp;int maxResults = 10,}<br/>) | Detects and extracts text from any image. For example, a photograph might contain a street sign or traffic sign. The JSON includes the entire extracted string, as well as individual words, and their bounding boxes. |
 | Future<WebDetection?> **webDetection**(<br/>&nbsp;&nbsp;JsonImage jsonImage, <br/>&nbsp;&nbsp;{ImageContext? imageContext,<br/>&nbsp;&nbsp;int maxResults = 10,}<br/>) | Web Detection detects Web references to an image. |
 
+## Security & Best Practices
+
+### Credential Management
+
+Always clear credentials when they're no longer needed:
+
+```dart
+// When logging out or shutting down
+googleVision.clearCredentials();
+```
+
+### Retry with Exponential Backoff
+
+For production apps, wrap API calls with retry logic:
+
+```dart
+import 'package:google_vision/google_vision.dart';
+
+final result = await RetryUtility.withRetry(
+  () => googleVision.image.faceDetection(jsonImage),
+  maxRetries: 3,
+  baseDelay: Duration(seconds: 1),
+);
+```
+
+### Input Validation
+
+All detection methods automatically validate:
+- `maxResults` must be between 1 and 100
+- `JsonImage` must have content, source, or GCS URI
+- `InputConfig` must have gcsSource or content
+
+Invalid parameters throw `ArgumentError` immediately, preventing unnecessary API calls.
+
 ## Usage with Flutter
 
 For a quick intro into the use of Google Vision in a Flutter, take a look at the [`google_vision_flutter`](https://github.com/cdavis-code/google_vision_workspace/tree/main/packages/google_vision_flutter) package and the [example](https://github.com/cdavis-code/google_vision_workspace/tree/main/packages/google_vision_flutter/example) folder of the project's GitHub repository.
@@ -154,6 +202,47 @@ vision --help
 ```
 
 Please see the [google_vision_cli documentation](https://github.com/cdavis-code/google_vision_workspace/tree/main/packages/google_vision_cli) for more detailed usage information.
+
+## Document → Markdown
+
+The result of `DOCUMENT_TEXT_DETECTION` (a `FullTextAnnotation`) can be converted directly to a well-formatted markdown document. The converter walks the `Page → Block → Paragraph → Word → Symbol` hierarchy and uses Vision's native `BlockType`, the per-word `DetectedBreak`, and a relative symbol-height heuristic to emit headers, paragraphs, lists, tables, checkboxes, and image placeholders.
+
+```dart
+final fullTextAnnotation = await googleVision.image.documentTextDetection(
+  JsonImage.fromBuffer(inputBytes.buffer),
+);
+
+final markdown = fullTextAnnotation!.toMarkdown();
+print(markdown);
+```
+
+Pass a `MarkdownOptions` instance to disable individual detectors or tune the header height ratios:
+
+```dart
+final markdown = fullTextAnnotation.toMarkdown(
+  options: const MarkdownOptions(
+    detectCheckboxes: false,
+    headerH1Ratio: 1.5,
+  ),
+);
+```
+
+For multi-page PDFs use `MarkdownConverter.convertPages()` after flattening the file responses:
+
+```dart
+final fileResponses = await googleVision.file.documentTextDetection(
+  InputConfig.fromBuffer(pdfBytes.buffer),
+  pages: [1, 2, 3],
+);
+
+final pages = [
+  for (final fr in fileResponses)
+    for (final ir in fr.responses ?? const [])
+      ...?ir.fullTextAnnotation?.pages,
+];
+
+final markdown = const MarkdownConverter().convertPages(pages);
+```
 
 ## Reference
 

@@ -1,5 +1,29 @@
 # Changelog
 
+## 2.2.0
+
+* **Security enhancements**:
+  - Credential leakage prevention with secure logging interceptor
+  - Input validation for all API methods (maxResults bounds, required fields)
+  - New `clearCredentials()` method for secure logout
+  - Configurable OAuth endpoints for Google Cloud Enterprise
+  - Exception information leakage prevention
+* **Reliability**:
+  - Fixed token expiry calculation bug (tokens now refresh properly)
+  - `RetryUtility` class with exponential backoff for resilient API calls
+* **Documentation**:
+  - Updated README with security best practices
+  - Added retry and credential management examples
+
+## 2.1.1
+
+* fix: form-field placeholder detection for intra-block gaps (EOL_SURE_SPACE transitions)
+* fix: collapse spurious spaces around punctuation in markdown output
+
+## 2.1.0
+
+* feat: `FullTextAnnotation.toMarkdown()` converter for `DOCUMENT_TEXT_DETECTION` (headers, lists, tables, checkboxes, image placeholders)
+
 ## 2.0.0+12
 
 * version bump for publish

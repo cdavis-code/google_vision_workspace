@@ -8,6 +8,8 @@ export 'src/google_vision_file.dart';
 export 'src/google_vision_image.dart';
 export 'src/annotate_json_serializable.dart';
 export 'src/token_generator.dart';
+export 'src/request_validator.dart';
+export 'src/retry_utility.dart';
 
 export 'src/model/annotate_file_request.dart';
 export 'src/model/annotate_file_response.dart';
@@ -64,5 +66,7 @@ export 'src/provider/files.dart';
 export 'src/provider/images.dart';
 export 'src/provider/oauth.dart';
 
+export 'src/util/markdown_converter.dart';
+export 'src/util/markdown_options.dart';
 export 'src/util/serializable_image.dart';
 export 'src/util/util.dart';

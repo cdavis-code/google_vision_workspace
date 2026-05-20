@@ -6,3 +6,9 @@ example/cropped.jpg
 example/debugImage.jpg
 
 example/flutter
+
+# Generated documentation (large, auto-generated)
+doc/api/
+
+# Dart tool files
+.dart_tool/

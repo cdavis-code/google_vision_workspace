@@ -31,6 +31,10 @@ class GoogleVisionFile {
     List<int>? pages,
     String? parent,
   }) async {
+    RequestValidator.validateInputConfig(inputConfig);
+    RequestValidator.validateAnnotationType(annotationType);
+    RequestValidator.validateMaxResults(maxResults, 'maxResults');
+
     final batchAnnotateFilesResponse = await annotate(
       requests: [
         AnnotateFileRequest(

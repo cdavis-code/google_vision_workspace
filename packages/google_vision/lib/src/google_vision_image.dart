@@ -29,6 +29,10 @@ class GoogleVisionImage {
     ImageContext? imageContext,
     int maxResults = 10,
   }) async {
+    RequestValidator.validateJsonImage(jsonImage);
+    RequestValidator.validateAnnotationType(annotationType);
+    RequestValidator.validateMaxResults(maxResults, 'maxResults');
+
     final annotatedResponses = await annotate(
       requests: [
         AnnotateImageRequest(

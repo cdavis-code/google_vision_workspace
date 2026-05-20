@@ -5,6 +5,68 @@ import 'package:loggy/loggy.dart';
 
 import 'authorization_exception.dart';
 
+/// Secure HTTP interceptor that redacts sensitive headers from logs
+class _SecureLoggyDioInterceptor extends LoggyDioInterceptor {
+  _SecureLoggyDioInterceptor({
+    super.requestBody,
+    super.responseBody,
+    super.requestLevel,
+    super.responseLevel,
+    super.errorLevel,
+  });
+
+  static const _sensitiveHeaders = {
+    'authorization',
+    'x-goog-api-key',
+    'x-goog-user-project',
+    'cookie',
+    'x-api-key',
+  };
+
+  @override
+  void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
+    // Create a copy of headers with sensitive values redacted
+    final safeOptions = RequestOptions(
+      method: options.method,
+      path: options.path,
+      headers: options.headers.map(
+        (key, value) => MapEntry(
+          key,
+          _sensitiveHeaders.contains(key.toLowerCase()) ? '[REDACTED]' : value,
+        ),
+      ),
+      data: options.data,
+      queryParameters: options.queryParameters,
+    );
+    super.onRequest(safeOptions, handler);
+  }
+
+  @override
+  void onResponse(Response response, ResponseInterceptorHandler handler) {
+    // Redact sensitive headers from response logs
+    final safeResponse = Response(
+      requestOptions: response.requestOptions,
+      data: response.data,
+      headers: Headers.fromMap(
+        response.headers.map.map(
+          (key, values) => MapEntry(
+            key,
+            _sensitiveHeaders.contains(key.toLowerCase())
+                ? ['[REDACTED]']
+                : values,
+          ),
+        ),
+      ),
+      statusCode: response.statusCode,
+      statusMessage: response.statusMessage,
+      isRedirect: response.isRedirect,
+      redirects: response.redirects,
+      extra: response.extra,
+    );
+    super.onResponse(safeResponse, handler);
+  }
+}
+
 /// Integrates Google Vision features, including painter labeling, face, logo,
 /// and landmark detection, optical character recognition (OCR), and detection
 /// of explicit content, into applications.
@@ -12,7 +74,7 @@ class GoogleVision with UiLoggy {
   static final GoogleVision _instance = GoogleVision._internal();
 
   final dio = Dio();
-  final tokenExpiry = DateTime(2010, 0, 0);
+  DateTime _tokenExpiry = DateTime(2010, 0, 0);
 
   late final _imagesClient = ImagesClient(dio);
   late final _filesClient = FilesClient(dio);
@@ -36,11 +98,9 @@ class GoogleVision with UiLoggy {
   factory GoogleVision([LogLevel logLevel = LogLevel.off]) {
     if (logLevel != LogLevel.off) {
       _instance.dio.interceptors.add(
-        LoggyDioInterceptor(
+        _SecureLoggyDioInterceptor(
           requestBody: true,
           responseBody: true,
-          requestHeader: false,
-          responseHeader: false,
           requestLevel: logLevel,
           responseLevel: logLevel,
           errorLevel: logLevel,
@@ -105,6 +165,17 @@ class GoogleVision with UiLoggy {
     }
   }
 
+  /// Clear all authentication credentials and tokens.
+  /// Call this method when logging out or when credentials are no longer needed.
+  void clearCredentials() {
+    _apiKey = null;
+    _token = null;
+    tokenGenerator = null;
+    _tokenExpiry = DateTime(2010, 0, 0);
+    dio.options.headers.remove('authorization');
+    dio.options.headers.remove('X-Goog-Api-Key');
+  }
+
   Future<void> confirmToken() async {
     if (tokenGenerator == null) {
       throw AuthorizationException(
@@ -112,12 +183,14 @@ class GoogleVision with UiLoggy {
         'Call withApiKey(), withJwt(), or withGenerator() first.',
       );
     } else {
-      if (tokenExpiry.isBefore(DateTime.now())) {
+      if (_tokenExpiry.isBefore(DateTime.now())) {
         final tokenData = await tokenGenerator!.generate();
 
         _token = tokenData.accessToken;
 
-        tokenExpiry.add(Duration(seconds: tokenData.expiresIn));
+        _tokenExpiry = DateTime.now().add(
+          Duration(seconds: tokenData.expiresIn),
+        );
       }
     }
   }
