@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.1.0
+
+* feat: new `markdown` command converts DOCUMENT_TEXT_DETECTION output to markdown (headers, lists, tables, checkboxes, image placeholders)
+
 ## 2.0.1+1
 
 * README installation instructions updated

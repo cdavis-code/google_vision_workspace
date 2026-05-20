@@ -25,6 +25,7 @@ void main(List<String> arguments) async {
     ..addCommand(VisionCropHintCommand())
     ..addCommand(VisionDetectCommand())
     ..addCommand(VisionHighlightCommand())
+    ..addCommand(VisionMarkdownCommand())
     ..addCommand(VisionSafeSearchCommand())
     ..addCommand(VisionScoreCommand())
     ..addCommand(VisionVersionCommand())

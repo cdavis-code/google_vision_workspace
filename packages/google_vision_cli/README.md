@@ -22,6 +22,7 @@ A command-line interface for the Google Vision API. Wraps the [`google_vision`](
   - [`crop_hints`](#crop_hints)
   - [`safe_search`](#safe_search)
   - [`highlight`](#highlight)
+  - [`markdown`](#markdown)
   - [`score`](#score)
 - [Feature Types](#feature-types)
 - [License](#license)
@@ -189,6 +190,33 @@ vision highlight --image-file photo.jpg \
   --output-file annotated.jpg \
   --features OBJECT_LOCALIZATION,LANDMARK_DETECTION \
   --line-color blue
+```
+
+### `markdown`
+
+Convert the result of `DOCUMENT_TEXT_DETECTION` to a well-formatted markdown document. Walks the `Page → Block → Paragraph → Word → Symbol` hierarchy and emits headers, paragraphs, lists, tables, checkboxes, and image placeholders.
+
+| Option | Required | Description |
+|--------|----------|-------------|
+| `--image-file` | yes | Path to the image or PDF file to process |
+| `--output-file`, `-o` | no | Path to write the markdown output (defaults to stdout) |
+| `--pages`, `-p` | no | Comma-separated list of page numbers for PDF/TIFF/GIF (max 5) |
+| `--[no-]page-headers` | no | Emit `# Page N` at the top of each page (default: on) |
+| `--[no-]image-placeholders` | no | Emit placeholder links for `BlockType.PICTURE` blocks (default: on) |
+| `--[no-]detect-headers` | no | Detect headers via relative symbol height (default: on) |
+| `--[no-]detect-lists` | no | Detect bullet and ordered lists (default: on) |
+| `--[no-]detect-checkboxes` | no | Detect checkbox glyphs and `[ ]` / `[x]` patterns (default: on) |
+
+```sh
+# Convert an image to markdown on stdout
+vision markdown --image-file form.jpg
+
+# Convert pages 1 and 2 of a PDF to a file
+vision markdown --image-file scan.pdf --pages 1,2 -o out.md
+
+# Disable header detection and image placeholders
+vision markdown --image-file scan.pdf --pages 1 \
+  --no-detect-headers --no-image-placeholders -o out.md
 ```
 
 ### `score`
