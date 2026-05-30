@@ -26,9 +26,6 @@ class GoogleVision with UiLoggy implements gv.GoogleVision {
   @override
   set apiKey(String apiKey) => _googleVision.apiKey = apiKey;
 
-  @override
-  get tokenExpiry => _googleVision.tokenExpiry;
-
   // Private constructor
   GoogleVision._internal();
 
@@ -95,4 +92,7 @@ class GoogleVision with UiLoggy implements gv.GoogleVision {
 
   @override
   Loggy<UiLoggy> get loggy => _googleVision.loggy;
+
+  @override
+  void clearCredentials() => _googleVision.clearCredentials();
 }
