@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.2.1
+
+* fix: align `google_vision_flutter` wrapper with core v2.1.0+ API — remove obsolete `tokenExpiry` override, add `clearCredentials()` override ([#32](https://github.com/cdavis-code/google_vision_workspace/pull/32) — thanks @felipebastoss)
+* meta: regenerated `meta.dart` for version consistency
+
 ## 2.2.0
 
 * **Security enhancements**:

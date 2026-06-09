@@ -12,6 +12,7 @@ Native [Dart](https://dart.dev/) package that integrates Google Vision features,
 - [Google Vision Images REST API Client](#google-vision-images-rest-api-client)
   - [Project Status](#project-status)
   - [Recent Changes](#recent-changes)
+    - [New for v2.2.1](#new-for-v221)
     - [New for v2.2.0](#new-for-v220)
     - [New for v2.0.0](#new-for-v200)
     - [New for v1.4.0](#new-for-v140)
@@ -38,6 +39,9 @@ Native [Dart](https://dart.dev/) package that integrates Google Vision features,
 Please feel free to submit PRs for any additional helper methods, or report an [issue](https://github.com/cdavis-code/google_vision_workspace/issues) for a missing helper method and I'll add it if I have time available.
 
 ## Recent Changes
+
+### New for v2.2.1
+  - **Flutter wrapper fix**: Removed obsolete `tokenExpiry` getter override and added `clearCredentials()` override to align `google_vision_flutter` with the core v2.1.0+ API ([#32](https://github.com/cdavis-code/google_vision_workspace/pull/32))
 
 ### New for v2.2.0
   - **Security enhancements**: Credential leakage prevention with secure logging interceptor that automatically redacts sensitive headers
@@ -83,7 +87,7 @@ To use this package, add the dependency to your `pubspec.yaml` file:
 ```yaml
 dependencies:
   ...
-  google_vision: ^2.2.0
+  google_vision: ^2.2.1
 ```
 
 ### Obtaining Authentication/Authorization Credentials
