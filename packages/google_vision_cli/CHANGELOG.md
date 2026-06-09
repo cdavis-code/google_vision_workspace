@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.1.1
+
+* chore: bumped `google_vision` dependency to `^2.2.1`
+* chore: added `.pubignore` to exclude `out.md`, `doc/api/`, and `.dart_tool/` from publication
+
 ## 2.1.0
 
 * feat: new `markdown` command converts DOCUMENT_TEXT_DETECTION output to markdown (headers, lists, tables, checkboxes, image placeholders)

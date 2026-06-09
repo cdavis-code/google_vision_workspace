@@ -1,6 +1,6 @@
 name: google_vision_cli
 description: A CLI tool for making API requests to Google Vision API using the google_vision package.
-version: 2.1.0
+version: 2.1.1
 repository: https://github.com/cdavis-code/google_vision_workspace
 homepage: https://github.com/cdavis-code/google_vision_workspace/tree/main/packages/google_vision_cli
 issue_tracker: https://github.com/cdavis-code/google_vision_workspace/issues
@@ -17,7 +17,7 @@ funding:
 resolution: workspace
 
 environment:
-  sdk: ^3.8.0
+  sdk: ^3.12.0
 
 executables:
   vision: vision
@@ -25,7 +25,7 @@ executables:
 dependencies:
   args: ^2.7.0
   dio: ^5.9.2
-  google_vision: ^2.2.0
+  google_vision: ^2.2.1
   image: ^4.8.0
   loggy: ^2.0.3
   collection: ^1.19.1
