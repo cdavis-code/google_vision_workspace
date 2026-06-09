@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.0.2
+
+* fix: sync runtime version string in `js_bindings.dart` to match package version
+
+## 1.0.1
+
+* chore: bumped `google_vision` dependency to `^2.2.1`
+* docs: removed `withGenerator()` section (not implemented in JS bindings)
+* docs: corrected Dart SDK requirement to `^3.12.0`
+
 ## 1.0.0
 
 * Initial release of the Google Vision JS interop package

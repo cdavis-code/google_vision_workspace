@@ -17,7 +17,7 @@ external JSObject get _globalThis;
 void install() {
   final ns = JSObject();
   ns.setProperty('create'.toJS, _createVisionHandle.toJS);
-  ns.setProperty('version'.toJS, '1.0.0'.toJS);
+  ns.setProperty('version'.toJS, '1.0.2'.toJS);
   _globalThis.setProperty('GoogleVisionJs'.toJS, ns);
 }
 

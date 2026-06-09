@@ -15183,7 +15183,7 @@
       }(A._callDartFunctionFast0, A.js_bindings___createVisionHandle$closure());
       result[$.$get$DART_CLOSURE_DART_JSINTEROP_PROPERTY_NAME()] = A.js_bindings___createVisionHandle$closure();
       _this.create = result;
-      _this.version = "1.0.0";
+      _this.version = "1.0.2";
       A._asJSObject(init.G.globalThis).GoogleVisionJs = _this;
     },
     wrapFormatException($name, value, body, $T) {
@@ -28190,7 +28190,7 @@
     detection$4$imageContext$maxResults(jsonImage, annotationType, imageContext, maxResults) {
       var $async$goto = 0,
         $async$completer = A._makeAsyncAwaitCompleter(type$.AnnotateImageResponse),
-        $async$returnValue, $async$self = this, t1, t2, t3, $async$temp1;
+        $async$returnValue, $async$self = this, t2, t3, t1, $async$temp1;
       var $async$detection$4$imageContext$maxResults = A._wrapJsFunctionForAsync(function($async$errorCode, $async$result) {
         if ($async$errorCode === 1)
           return A._asyncRethrow($async$result, $async$completer);
@@ -28198,9 +28198,9 @@
           switch ($async$goto) {
             case 0:
               // Function start
-              jsonImage.get$content();
-              jsonImage.get$source();
-              jsonImage.get$gcsImageUri();
+              t1 = jsonImage.imageUri == null;
+              if (jsonImage.byteBuffer == null && t1)
+                A.throwExpression(A.ArgumentError$("JsonImage must have either content (byteBuffer) or source (imageUri)", null));
               A.RequestValidator_validateMaxResults(maxResults, "maxResults");
               t1 = type$.List_AnnotateImageRequest._as(A._setArrayType([new A.AnnotateImageRequest(jsonImage, A._setArrayType([new A.Feature(maxResults, annotationType)], type$.JSArray_Feature), imageContext)], type$.JSArray_AnnotateImageRequest));
               $async$self.googleVision.setAuthHeader$0();

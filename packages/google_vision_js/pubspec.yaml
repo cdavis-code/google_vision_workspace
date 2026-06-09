@@ -1,6 +1,6 @@
 name: google_vision_js
 description: JavaScript interop wrapper for the Google Vision API, enabling Vision AI features in Node.js and browser environments.
-version: 1.0.0
+version: 1.0.2
 
 repository: https://github.com/cdavis-code/google_vision_workspace
 homepage: https://github.com/cdavis-code/google_vision_workspace/tree/main/packages/google_vision_js
@@ -17,10 +17,10 @@ funding:
   - https://www.buymeacoffee.com/cdavis
 
 environment:
-  sdk: ^3.8.0
+  sdk: ^3.12.0
 
 dependencies:
-  google_vision: ^2.2.0
+  google_vision: ^2.2.1
   web: ^1.1.1
 
 dev_dependencies:

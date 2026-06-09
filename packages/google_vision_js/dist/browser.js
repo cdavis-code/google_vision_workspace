@@ -131,7 +131,7 @@ var GoogleVision = class _GoogleVision {
 
 // src/browser.ts
 var loadDart = async () => {
-  await import("./google_vision-4GENUPGV.js");
+  await import("./google_vision-A24RWU2X.js");
 };
 var GoogleVision2 = class extends GoogleVision {
   static async create() {

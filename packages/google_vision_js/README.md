@@ -27,7 +27,6 @@ Built on the battle-tested [`google_vision`](https://pub.dev/packages/google_vis
   - [Authentication](#authentication)
     - [API Key (Synchronous)](#api-key-synchronous)
     - [JWT / Service Account (Asynchronous)](#jwt--service-account-asynchronous)
-    - [Custom OAuth Token Generator (Advanced)](#custom-oauth-token-generator-advanced)
   - [Image API (`vision.image`)](#image-api-visionimage)
   - [File API (`vision.file`)](#file-api-visionfile)
 - [Builds](#builds)
@@ -189,78 +188,6 @@ await vision.withJwt(credentials);
 await vision.withJwt(credentials, 'https://www.googleapis.com/auth/cloud-vision');
 ```
 
-#### Custom OAuth Token Generator (Advanced)
-
-For advanced OAuth2 flows or custom token management, implement a `TokenGenerator` that produces OAuth2 access tokens:
-
-```typescript
-import { GoogleVision, TokenGenerator, Token } from '@unngh/google-vision';
-
-class GoogleOAuthGenerator implements TokenGenerator {
-  async generate(): Promise<Token> {
-    // Exchange authorization code for Google OAuth2 token
-    const response = await fetch('https://oauth2.googleapis.com/token', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: new URLSearchParams({
-        grant_type: 'authorization_code',
-        code: 'YOUR_AUTHORIZATION_CODE',
-        client_id: 'YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com',
-        client_secret: 'YOUR_GOOGLE_CLIENT_SECRET',
-        redirect_uri: 'https://your-app.com/oauth/callback',
-      }),
-    });
-    
-    if (!response.ok) {
-      throw new Error(`Google OAuth token exchange failed: ${response.statusText}`);
-    }
-    
-    const data = await response.json();
-    return {
-      accessToken: data.access_token,
-      expiresIn: data.expires_in,
-      tokenType: data.token_type || 'Bearer',
-      scope: data.scope,
-      refreshToken: data.refresh_token,
-    };
-  }
-}
-
-const vision = await GoogleVision.create();
-const generator = new GoogleOAuthGenerator();
-await vision.withGenerator(generator);
-```
-
-**Google OAuth2 Setup:**
-
-1. **Create OAuth 2.0 credentials** in [Google Cloud Console → Credentials](https://console.cloud.google.com/apis/credentials)
-2. **Configure authorized redirect URIs** for your application
-3. **Implement the OAuth 2.0 authorization code flow**:
-   - Redirect users to `https://accounts.google.com/o/oauth2/v2/auth` with your `client_id` and required scopes
-   - Handle the callback and extract the authorization `code`
-   - Exchange the code for tokens using your `TokenGenerator`
-
-**Required Scopes for Vision API:**
-- `https://www.googleapis.com/auth/cloud-vision` — Full Vision API access
-- `https://www.googleapis.com/auth/cloud-platform` — Broader Google Cloud access
-
-**Use Cases for `withGenerator()`:**
-- User-authenticated OAuth2 flows (end-user credentials)
-- Custom token refresh strategies with business logic
-- Multi-tenant applications with per-user token management
-- Integration with Google Workspace SSO
-
-**Token Interface:**
-```typescript
-interface Token {
-  accessToken: string;      // Required: OAuth2 access token
-  expiresIn: number;        // Required: Token lifetime in seconds
-  tokenType: string;        // Required: Usually "Bearer"
-  scope?: string;           // Optional: Granted scopes
-  refreshToken?: string;    // Optional: For token refresh
-}
-```
-
 ### Image API (`vision.image`)
 
 All image methods accept an image source (URL string or `{ imageUri, content }` object) and an optional `maxResults` cap.
@@ -348,7 +275,6 @@ No configuration needed — just import and use.
 |--------|-----------|----------|
 | `withApiKey(key)` | `(apiKey: string) => this` | Quick starts, testing, client-side apps |
 | `withJwt(credentials, scope?)` | `(json: string, scope?: string) => Promise<this>` | Production server-side apps |
-| `withGenerator(generator)` | `(generator: TokenGenerator) => Promise<this>` | Custom OAuth2 flows, enterprise SSO |
 
 See [Get a Google Cloud Vision API Key](#get-a-google-cloud-vision-api-key) above for the full credential-setup walkthrough. For service-account JWT authentication, generate a JSON key file from **IAM & Admin → Service Accounts → Keys** in Google Cloud Console, grant it the **Cloud Vision AI Service Agent** role, and pass the JSON contents to `withJwt()`.
 
@@ -451,7 +377,7 @@ bash scripts/build.sh
 - `dist/*.d.ts` — TypeScript declaration files
 - `dist/google_vision.runtime.js` — dart2js runtime (copied for dynamic import)
 
-**Requirements**: Dart SDK ^3.8.0 for `dart2js` compilation.
+**Requirements**: Dart SDK ^3.12.0 for `dart2js` compilation.
 
 ---
 
