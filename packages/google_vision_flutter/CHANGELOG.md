@@ -1,5 +1,16 @@
 # Changelog
 
+## 2.2.1
+
+* fix: removed obsolete `tokenExpiry` getter override and added `clearCredentials()` override to align the Flutter wrapper with the core `google_vision` v2.1.0+ API ([#32](https://github.com/cdavis-code/google_vision_workspace/pull/32) — thanks @felipebastoss)
+
+## 2.2.0
+
+* added `GoogleVisionImageBuilder.documentTextToMarkdown()` and `GoogleVisionFileBuilder.documentTextToMarkdown()` factory constructors for converting document text detection results directly to Markdown
+* added `MarkdownOptions` parameter support for customizing Markdown output
+* version alignment with `google_vision` core package v2.2.0
+* inherited from core v2.1.0-v2.2.0: `MarkdownConverter`, `FullTextAnnotationMarkdown` extension, secure logging interceptor, `RequestValidator`, `RetryUtility`, `clearCredentials()`, and configurable OAuth endpoints
+
 ## 2.0.0+12
 
 * secure coding improvements
