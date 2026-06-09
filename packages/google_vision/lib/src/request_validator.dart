@@ -17,14 +17,14 @@ class RequestValidator {
       throw ArgumentError('JsonImage cannot be null');
     }
 
-    // Check if it has content or source (using reflection-free approach)
-    final hasContent = jsonImage.content != null;
-    final hasSource = jsonImage.source != null;
-    final hasGcsUri = jsonImage.gcsImageUri != null;
+    // Check if it has content (byteBuffer) or source (imageUri)
+    // JsonImage has byteBuffer and imageUri properties
+    final hasContent = jsonImage.byteBuffer != null;
+    final hasSource = jsonImage.imageUri != null;
 
-    if (!hasContent && !hasSource && !hasGcsUri) {
+    if (!hasContent && !hasSource) {
       throw ArgumentError(
-        'JsonImage must have either content, source, or gcsImageUri',
+        'JsonImage must have either content (byteBuffer) or source (imageUri)',
       );
     }
   }

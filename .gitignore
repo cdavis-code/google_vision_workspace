@@ -3,6 +3,7 @@
 .gitconfig
 .vscode
 .env
+.DS_Store
 
 # Files and directories created by pub
 .dart_tool/
@@ -29,3 +30,5 @@ doc/api/
 # Node packages
 node_modules/
 package-lock.json
+
+out.md

@@ -94,18 +94,34 @@ async function main() {
 
     console.log('\nAnalysis complete!');
   } catch (error) {
-    // dart2js boxes Dart exceptions: the real error is at
-    // error.error[Symbol('jsBoxedDartObjectProperty')]
-    const boxSym = error?.error
-      ? Object.getOwnPropertySymbols(error.error)
-          .find(s => s.toString().includes('jsBoxed'))
-      : null;
-    const boxed = boxSym ? error.error[boxSym] : null;
-    const msg =
-      boxed?.f ?? // Dart exception message
-      error?.message ??
-      String(error);
+    // dart2js boxes Dart exceptions — unwrap to get the real error
+    let msg = String(error);
+    
+    // Try to unwrap dart2js boxed exception
+    if (error?.error) {
+      const symbols = Object.getOwnPropertySymbols(error.error);
+      const boxSym = symbols.find(s => s.toString().includes('jsBoxed'));
+      
+      if (boxSym) {
+        const dartError = error.error[boxSym];
+        // Dart errors have message in different properties depending on type
+        msg = dartError?.message || 
+              dartError?.f || 
+              dartError?.toString() || 
+              String(dartError);
+      }
+    } else if (error?.message) {
+      msg = error.message;
+    }
+    
     console.error('Error during vision analysis:', msg);
+    
+    // For debugging: log full error structure (comment out in production)
+    console.error('Full error object:', JSON.stringify(error, (key, value) => {
+      if (typeof value === 'symbol') return value.toString();
+      return value;
+    }, 2));
+    
     process.exit(1);
   }
 }

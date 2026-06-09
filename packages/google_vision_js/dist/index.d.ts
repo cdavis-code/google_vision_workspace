@@ -26,10 +26,19 @@ interface VisionJsHandle {
     imageLogoDetection(imageSource: string | ImageSource, maxResults?: number): Promise<Record<string, any>[]>;
     imageObjectLocalization(imageSource: string | ImageSource, maxResults?: number): Promise<Record<string, any>[]>;
     imageWebDetection(imageSource: string | ImageSource, maxResults?: number): Promise<Record<string, any> | null>;
+    imageProductSearch(imageSource: string | ImageSource, maxResults?: number): Promise<Record<string, any> | null>;
     fileLabelDetection(gcsUri: string, maxResults?: number): Promise<Record<string, any>[]>;
     fileTextDetection(gcsUri: string, maxResults?: number): Promise<Record<string, any>[]>;
     fileDocumentTextDetection(gcsUri: string, maxResults?: number): Promise<Record<string, any>[]>;
     fileFaceDetection(gcsUri: string, maxResults?: number): Promise<Record<string, any>[]>;
+    fileCropHints(gcsUri: string, maxResults?: number): Promise<Record<string, any>[]>;
+    fileImageProperties(gcsUri: string, maxResults?: number): Promise<Record<string, any>[]>;
+    fileLandmarkDetection(gcsUri: string, maxResults?: number): Promise<Record<string, any>[]>;
+    fileLogoDetection(gcsUri: string, maxResults?: number): Promise<Record<string, any>[]>;
+    fileObjectLocalization(gcsUri: string, maxResults?: number): Promise<Record<string, any>[]>;
+    fileSafeSearchDetection(gcsUri: string, maxResults?: number): Promise<Record<string, any>[]>;
+    fileWebDetection(gcsUri: string, maxResults?: number): Promise<Record<string, any>[]>;
+    fileProductSearch(gcsUri: string, maxResults?: number): Promise<Record<string, any>[]>;
 }
 /**
  * Image source: either a URL string or an object with `imageUri` or `content`.
@@ -70,6 +79,7 @@ declare class GoogleVisionImage {
     logoDetection(imageSource: string | ImageSource, maxResults?: number): Promise<Record<string, any>[]>;
     objectLocalization(imageSource: string | ImageSource, maxResults?: number): Promise<Record<string, any>[]>;
     webDetection(imageSource: string | ImageSource, maxResults?: number): Promise<Record<string, any> | null>;
+    productSearch(imageSource: string | ImageSource, maxResults?: number): Promise<Record<string, any> | null>;
 }
 /** Sub-API for file-based Google Vision operations (PDFs, GCS files). */
 declare class GoogleVisionFile {
@@ -79,6 +89,14 @@ declare class GoogleVisionFile {
     textDetection(gcsUri: string, maxResults?: number): Promise<Record<string, any>[]>;
     documentTextDetection(gcsUri: string, maxResults?: number): Promise<Record<string, any>[]>;
     faceDetection(gcsUri: string, maxResults?: number): Promise<Record<string, any>[]>;
+    cropHints(gcsUri: string, maxResults?: number): Promise<Record<string, any>[]>;
+    imageProperties(gcsUri: string, maxResults?: number): Promise<Record<string, any>[]>;
+    landmarkDetection(gcsUri: string, maxResults?: number): Promise<Record<string, any>[]>;
+    logoDetection(gcsUri: string, maxResults?: number): Promise<Record<string, any>[]>;
+    objectLocalization(gcsUri: string, maxResults?: number): Promise<Record<string, any>[]>;
+    safeSearchDetection(gcsUri: string, maxResults?: number): Promise<Record<string, any>[]>;
+    webDetection(gcsUri: string, maxResults?: number): Promise<Record<string, any>[]>;
+    productSearch(gcsUri: string, maxResults?: number): Promise<Record<string, any>[]>;
 }
 declare class GoogleVision {
     private readonly handle;

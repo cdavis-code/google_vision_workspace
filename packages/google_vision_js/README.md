@@ -12,6 +12,43 @@ Built on the battle-tested [`google_vision`](https://pub.dev/packages/google_vis
 
 ---
 
+## Table of Contents
+
+- [Why @unngh/google-vision?](#why-unnghgoogle-vision)
+  - [Key Advantages](#key-advantages)
+- [Quick Start](#quick-start)
+  - [Installation](#installation)
+  - [Get a Google Cloud Vision API Key](#get-a-google-cloud-vision-api-key)
+  - [Basic Usage (Node.js / TypeScript)](#basic-usage-nodejs--typescript)
+  - [Browser Usage](#browser-usage)
+  - [Choosing an Import Path](#choosing-an-import-path)
+- [API Reference](#api-reference)
+  - [Creating a Client](#creating-a-client)
+  - [Authentication](#authentication)
+    - [API Key (Synchronous)](#api-key-synchronous)
+    - [JWT / Service Account (Asynchronous)](#jwt--service-account-asynchronous)
+    - [Custom OAuth Token Generator (Advanced)](#custom-oauth-token-generator-advanced)
+  - [Image API (`vision.image`)](#image-api-visionimage)
+  - [File API (`vision.file`)](#file-api-visionfile)
+- [Builds](#builds)
+  - [Automatic Polyfills (Node.js)](#automatic-polyfills-nodejs)
+- [Configuration Options](#configuration-options)
+  - [Authentication Methods](#authentication-methods)
+- [Examples](#examples)
+  - [Complete Workflow: Label + Safe Search + OCR](#complete-workflow-label--safe-search--ocr)
+  - [Face Detection with Emotion Analysis](#face-detection-with-emotion-analysis)
+  - [File Processing from Google Cloud Storage](#file-processing-from-google-cloud-storage)
+- [Caveats & Limitations](#caveats--limitations)
+- [Building from Source](#building-from-source)
+  - [Build Outputs](#build-outputs)
+- [Relation to the Dart Package](#relation-to-the-dart-package)
+- [Contributing](#contributing)
+  - [Publishing to npm](#publishing-to-npm)
+- [License](#license)
+- [Resources](#resources)
+
+---
+
 ## Why @unngh/google-vision?
 
 | Feature | @unngh/google-vision | @google-cloud/vision |
@@ -26,7 +63,7 @@ Built on the battle-tested [`google_vision`](https://pub.dev/packages/google_vis
 | **API Key Auth** | ✅ `withApiKey()` | ✅ |
 | **JWT Auth** | ✅ `withJwt()` | ✅ |
 | **Image API** | ✅ URL, base64, buffers | ✅ |
-| **File API (GCS)** | ✅ Text + Document text detection | ✅ |
+| **File API (GCS)** | ✅ Full 12-method parity (PDFs, TIFFs) | ✅ |
 | **Shared Protocol Core** | ✅ Same logic as Dart/CLI packages | Standalone implementation |
 
 ### Key Advantages
@@ -46,6 +83,27 @@ Built on the battle-tested [`google_vision`](https://pub.dev/packages/google_vis
 ```bash
 npm install @unngh/google-vision
 ```
+
+### Get a Google Cloud Vision API Key
+
+Before making your first request, create an API key in Google Cloud:
+
+1. **Enable the Vision API**
+   Open the [Google Cloud Console — Vision API library](https://console.cloud.google.com/apis/library/vision.googleapis.com), select (or create) a project, and click **Enable**.
+
+2. **Open the Credentials page**
+   In the left navigation, go to **APIs & Services → Credentials**, or jump directly to the [Credentials page](https://console.cloud.google.com/apis/credentials).
+
+3. **Create or select an API key**
+   Click **Create credentials → API key**. Copy the generated key. For production use, click **Edit API key** to restrict it to the Cloud Vision API and (optionally) HTTP referrers or IP ranges.
+
+4. **Export it as an environment variable**
+   ```bash
+   export GOOGLE_VISION_API_KEY="your-api-key-here"
+   ```
+   Add the line to your `~/.zshrc`, `~/.bashrc`, or a `.env` file so it persists across shells. Never commit API keys to source control.
+
+> **Production note:** For server-to-server use, prefer a service-account JWT via [`withJwt()`](#jwt--service-account-asynchronous) instead of an API key.
 
 ### Basic Usage (Node.js / TypeScript)
 
@@ -131,6 +189,78 @@ await vision.withJwt(credentials);
 await vision.withJwt(credentials, 'https://www.googleapis.com/auth/cloud-vision');
 ```
 
+#### Custom OAuth Token Generator (Advanced)
+
+For advanced OAuth2 flows or custom token management, implement a `TokenGenerator` that produces OAuth2 access tokens:
+
+```typescript
+import { GoogleVision, TokenGenerator, Token } from '@unngh/google-vision';
+
+class GoogleOAuthGenerator implements TokenGenerator {
+  async generate(): Promise<Token> {
+    // Exchange authorization code for Google OAuth2 token
+    const response = await fetch('https://oauth2.googleapis.com/token', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams({
+        grant_type: 'authorization_code',
+        code: 'YOUR_AUTHORIZATION_CODE',
+        client_id: 'YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com',
+        client_secret: 'YOUR_GOOGLE_CLIENT_SECRET',
+        redirect_uri: 'https://your-app.com/oauth/callback',
+      }),
+    });
+    
+    if (!response.ok) {
+      throw new Error(`Google OAuth token exchange failed: ${response.statusText}`);
+    }
+    
+    const data = await response.json();
+    return {
+      accessToken: data.access_token,
+      expiresIn: data.expires_in,
+      tokenType: data.token_type || 'Bearer',
+      scope: data.scope,
+      refreshToken: data.refresh_token,
+    };
+  }
+}
+
+const vision = await GoogleVision.create();
+const generator = new GoogleOAuthGenerator();
+await vision.withGenerator(generator);
+```
+
+**Google OAuth2 Setup:**
+
+1. **Create OAuth 2.0 credentials** in [Google Cloud Console → Credentials](https://console.cloud.google.com/apis/credentials)
+2. **Configure authorized redirect URIs** for your application
+3. **Implement the OAuth 2.0 authorization code flow**:
+   - Redirect users to `https://accounts.google.com/o/oauth2/v2/auth` with your `client_id` and required scopes
+   - Handle the callback and extract the authorization `code`
+   - Exchange the code for tokens using your `TokenGenerator`
+
+**Required Scopes for Vision API:**
+- `https://www.googleapis.com/auth/cloud-vision` — Full Vision API access
+- `https://www.googleapis.com/auth/cloud-platform` — Broader Google Cloud access
+
+**Use Cases for `withGenerator()`:**
+- User-authenticated OAuth2 flows (end-user credentials)
+- Custom token refresh strategies with business logic
+- Multi-tenant applications with per-user token management
+- Integration with Google Workspace SSO
+
+**Token Interface:**
+```typescript
+interface Token {
+  accessToken: string;      // Required: OAuth2 access token
+  expiresIn: number;        // Required: Token lifetime in seconds
+  tokenType: string;        // Required: Usually "Bearer"
+  scope?: string;           // Optional: Granted scopes
+  refreshToken?: string;    // Optional: For token refresh
+}
+```
+
 ### Image API (`vision.image`)
 
 All image methods accept an image source (URL string or `{ imageUri, content }` object) and an optional `maxResults` cap.
@@ -148,6 +278,7 @@ All image methods accept an image source (URL string or `{ imageUri, content }` 
 | `imageProperties(source, maxResults?)` | `ImageProperties \| null` | Dominant colors and image stats |
 | `objectLocalization(source, maxResults?)` | `LocalizedObject[]` | Bounding boxes for objects |
 | `webDetection(source, maxResults?)` | `WebDetection \| null` | Web entities, similar images, pages |
+| `productSearch(source, maxResults?)` | `ProductSearchResults \| null` | Product catalog matches (Vision Product Search) |
 
 ```typescript
 // URL string
@@ -164,18 +295,27 @@ const results = await vision.image.textDetection({
 
 ### File API (`vision.file`)
 
-Process PDFs and images stored in Google Cloud Storage. Accepts a GCS URI and optional `maxResults` cap.
+Process PDFs and images stored in Google Cloud Storage. Each method accepts a `gs://` URI and an optional `maxResults` cap. The Vision File API is most commonly used for multi-page PDFs and TIFFs, but supports the same detection types as the Image API.
 
 | Method | Returns | Description |
 |--------|---------|-------------|
-| `labelDetection(gcsUri, maxResults?)` | `Label[]` | Labels for GCS objects |
-| `textDetection(gcsUri, maxResults?)` | `TextAnnotation[]` | OCR from GCS files/PDFs |
-| `documentTextDetection(gcsUri, maxResults?)` | `TextAnnotation[]` | Dense OCR from GCS files/PDFs |
+| `labelDetection(gcsUri, maxResults?)` | `Label[]` | Labels for GCS objects (per page) |
+| `textDetection(gcsUri, maxResults?)` | `TextAnnotation[]` | OCR from GCS files / PDFs |
+| `documentTextDetection(gcsUri, maxResults?)` | `TextAnnotation[]` | Dense OCR from GCS files / PDFs |
 | `faceDetection(gcsUri, maxResults?)` | `FaceAnnotation[]` | Face detection from GCS images |
+| `cropHints(gcsUri, maxResults?)` | `CropHint[]` | Suggested crop regions per page |
+| `imageProperties(gcsUri, maxResults?)` | `ImageProperties[]` | Dominant colors and image stats per page |
+| `landmarkDetection(gcsUri, maxResults?)` | `EntityAnnotation[]` | Geographic landmark recognition |
+| `logoDetection(gcsUri, maxResults?)` | `EntityAnnotation[]` | Brand logo recognition |
+| `objectLocalization(gcsUri, maxResults?)` | `LocalizedObject[]` | Bounding boxes for objects |
+| `safeSearchDetection(gcsUri, maxResults?)` | `SafeSearch[]` | Explicit content classification per page |
+| `webDetection(gcsUri, maxResults?)` | `WebDetection[]` | Web entities, similar images, pages |
+| `productSearch(gcsUri, maxResults?)` | `ProductSearchResults[]` | Product catalog matches (Vision Product Search) |
 
 ```typescript
 const labels = await vision.file.labelDetection('gs://my-bucket/document.pdf');
 const texts = await vision.file.textDetection('gs://my-bucket/scanned-form.pdf');
+const ocr = await vision.file.documentTextDetection('gs://my-bucket/scans/contract.pdf');
 ```
 
 ---
@@ -208,12 +348,9 @@ No configuration needed — just import and use.
 |--------|-----------|----------|
 | `withApiKey(key)` | `(apiKey: string) => this` | Quick starts, testing, client-side apps |
 | `withJwt(credentials, scope?)` | `(json: string, scope?: string) => Promise<this>` | Production server-side apps |
+| `withGenerator(generator)` | `(generator: TokenGenerator) => Promise<this>` | Custom OAuth2 flows, enterprise SSO |
 
-### Prerequisites
-
-1. **Enable the Vision API** in the [Google Cloud Console](https://console.cloud.google.com/apis/library/vision.googleapis.com).
-2. **Create credentials** — API key (simplest) or service account (recommended for production).
-3. **Set your API key** as `GOOGLE_VISION_API_KEY` environment variable, or pass it directly to `withApiKey()`.
+See [Get a Google Cloud Vision API Key](#get-a-google-cloud-vision-api-key) above for the full credential-setup walkthrough. For service-account JWT authentication, generate a JSON key file from **IAM & Admin → Service Accounts → Keys** in Google Cloud Console, grant it the **Cloud Vision AI Service Agent** role, and pass the JSON contents to `withJwt()`.
 
 ---
 

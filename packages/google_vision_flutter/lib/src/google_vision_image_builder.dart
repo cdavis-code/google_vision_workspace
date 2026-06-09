@@ -76,6 +76,39 @@ class GoogleVisionImageBuilder extends GoogleVisionBuilderBase {
     onLoading: onLoading,
   );
 
+  /// Creates a new instance of [GoogleVisionImageBuilder] that runs
+  /// `DOCUMENT_TEXT_DETECTION` and converts the resulting
+  /// [FullTextAnnotation] into markdown using [FullTextAnnotationMarkdown.toMarkdown].
+  factory GoogleVisionImageBuilder.documentTextToMarkdown({
+    Key? key,
+    required FutureOr<GoogleVision> googleVision,
+    required ImageProvider imageProvider,
+    required Widget Function(BuildContext, String?) builder,
+    Widget Function(Object)? onError,
+    Widget Function()? onLoading,
+    int maxResults = 10,
+    MarkdownOptions? markdownOptions,
+  }) => GoogleVisionImageBuilder(
+    builder:
+        (
+          BuildContext context,
+          AsyncSnapshot<BatchAnnotateImagesResponse> snapshot,
+        ) => builder(
+          context,
+          snapshot.data?.responses.first.fullTextAnnotation?.toMarkdown(
+            options: markdownOptions ?? const MarkdownOptions(),
+          ),
+        ),
+    imageProvider: imageProvider,
+    googleVision: googleVision,
+    features: GoogleVisionBuilderBase.getFeatures(
+      AnnotationType.documentTextDetection,
+      maxResults,
+    ),
+    onError: onError,
+    onLoading: onLoading,
+  );
+
   /// Creates a new instance of [GoogleVisionImageBuilder] for face detections.
   factory GoogleVisionImageBuilder.faceDetection({
     Key? key,

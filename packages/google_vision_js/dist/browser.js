@@ -52,6 +52,9 @@ var GoogleVisionImage = class {
   webDetection(imageSource, maxResults) {
     return this.handle.imageWebDetection(imageSource, maxResults);
   }
+  productSearch(imageSource, maxResults) {
+    return this.handle.imageProductSearch(imageSource, maxResults);
+  }
 };
 var GoogleVisionFile = class {
   constructor(handle) {
@@ -69,6 +72,30 @@ var GoogleVisionFile = class {
   }
   faceDetection(gcsUri, maxResults) {
     return this.handle.fileFaceDetection(gcsUri, maxResults);
+  }
+  cropHints(gcsUri, maxResults) {
+    return this.handle.fileCropHints(gcsUri, maxResults);
+  }
+  imageProperties(gcsUri, maxResults) {
+    return this.handle.fileImageProperties(gcsUri, maxResults);
+  }
+  landmarkDetection(gcsUri, maxResults) {
+    return this.handle.fileLandmarkDetection(gcsUri, maxResults);
+  }
+  logoDetection(gcsUri, maxResults) {
+    return this.handle.fileLogoDetection(gcsUri, maxResults);
+  }
+  objectLocalization(gcsUri, maxResults) {
+    return this.handle.fileObjectLocalization(gcsUri, maxResults);
+  }
+  safeSearchDetection(gcsUri, maxResults) {
+    return this.handle.fileSafeSearchDetection(gcsUri, maxResults);
+  }
+  webDetection(gcsUri, maxResults) {
+    return this.handle.fileWebDetection(gcsUri, maxResults);
+  }
+  productSearch(gcsUri, maxResults) {
+    return this.handle.fileProductSearch(gcsUri, maxResults);
   }
 };
 var GoogleVision = class _GoogleVision {
@@ -104,7 +131,7 @@ var GoogleVision = class _GoogleVision {
 
 // src/browser.ts
 var loadDart = async () => {
-  await import("./google_vision-7U22KCUS.js");
+  await import("./google_vision-4GENUPGV.js");
 };
 var GoogleVision2 = class extends GoogleVision {
   static async create() {

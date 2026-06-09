@@ -95,6 +95,13 @@ class GoogleVisionImage {
   ): Promise<Record<string, any> | null> {
     return this.handle.imageWebDetection(imageSource, maxResults);
   }
+
+  productSearch(
+    imageSource: string | ImageSource,
+    maxResults?: number,
+  ): Promise<Record<string, any> | null> {
+    return this.handle.imageProductSearch(imageSource, maxResults);
+  }
 }
 
 /** Sub-API for file-based Google Vision operations (PDFs, GCS files). */
@@ -127,6 +134,62 @@ class GoogleVisionFile {
     maxResults?: number,
   ): Promise<Record<string, any>[]> {
     return this.handle.fileFaceDetection(gcsUri, maxResults);
+  }
+
+  cropHints(
+    gcsUri: string,
+    maxResults?: number,
+  ): Promise<Record<string, any>[]> {
+    return this.handle.fileCropHints(gcsUri, maxResults);
+  }
+
+  imageProperties(
+    gcsUri: string,
+    maxResults?: number,
+  ): Promise<Record<string, any>[]> {
+    return this.handle.fileImageProperties(gcsUri, maxResults);
+  }
+
+  landmarkDetection(
+    gcsUri: string,
+    maxResults?: number,
+  ): Promise<Record<string, any>[]> {
+    return this.handle.fileLandmarkDetection(gcsUri, maxResults);
+  }
+
+  logoDetection(
+    gcsUri: string,
+    maxResults?: number,
+  ): Promise<Record<string, any>[]> {
+    return this.handle.fileLogoDetection(gcsUri, maxResults);
+  }
+
+  objectLocalization(
+    gcsUri: string,
+    maxResults?: number,
+  ): Promise<Record<string, any>[]> {
+    return this.handle.fileObjectLocalization(gcsUri, maxResults);
+  }
+
+  safeSearchDetection(
+    gcsUri: string,
+    maxResults?: number,
+  ): Promise<Record<string, any>[]> {
+    return this.handle.fileSafeSearchDetection(gcsUri, maxResults);
+  }
+
+  webDetection(
+    gcsUri: string,
+    maxResults?: number,
+  ): Promise<Record<string, any>[]> {
+    return this.handle.fileWebDetection(gcsUri, maxResults);
+  }
+
+  productSearch(
+    gcsUri: string,
+    maxResults?: number,
+  ): Promise<Record<string, any>[]> {
+    return this.handle.fileProductSearch(gcsUri, maxResults);
   }
 }
 

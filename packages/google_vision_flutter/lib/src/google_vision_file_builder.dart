@@ -78,6 +78,38 @@ class GoogleVisionFileBuilder extends GoogleVisionBuilderBase {
     onLoading: onLoading,
   );
 
+  /// Creates a new instance of [GoogleVisionFileBuilder] that runs
+  /// `DOCUMENT_TEXT_DETECTION` and converts the resulting
+  /// [FullTextAnnotation] into markdown using [FullTextAnnotationMarkdown.toMarkdown].
+  factory GoogleVisionFileBuilder.documentTextToMarkdown({
+    Key? key,
+    required FutureOr<GoogleVision> googleVision,
+    required Future<InputConfig> inputConfig,
+    required Widget Function(BuildContext, String?) builder,
+    Widget Function(Object)? onError,
+    Widget Function()? onLoading,
+    int maxResults = 10,
+    MarkdownOptions? markdownOptions,
+  }) => GoogleVisionFileBuilder(
+    builder:
+        (
+          BuildContext context,
+          AsyncSnapshot<BatchAnnotateFilesResponse> snapshot,
+        ) => builder(
+          context,
+          snapshot.data?.responses.first.responses?.first.fullTextAnnotation
+              ?.toMarkdown(options: markdownOptions ?? const MarkdownOptions()),
+        ),
+    inputConfig: inputConfig,
+    googleVision: googleVision,
+    features: GoogleVisionBuilderBase.getFeatures(
+      AnnotationType.documentTextDetection,
+      maxResults,
+    ),
+    onError: onError,
+    onLoading: onLoading,
+  );
+
   /// Creates a new instance of [GoogleVisionFileBuilder] for face detections.
   factory GoogleVisionFileBuilder.faceDetection({
     Key? key,

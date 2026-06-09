@@ -22,9 +22,9 @@ dart pub get
 
 mkdir -p build/dart
 
-echo "==> Compiling Dart -> JavaScript (dart2js -O4)"
+echo "==> Compiling Dart -> JavaScript (dart2js -O1)"
 dart compile js \
-  -O4 \
+  -O1 \
   -o build/dart/google_vision.js \
   lib/google_vision_js.dart
 

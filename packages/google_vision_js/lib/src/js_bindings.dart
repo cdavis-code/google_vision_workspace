@@ -224,6 +224,21 @@ JSObject _createVisionHandle() {
     }).toJS,
   );
 
+  handle.setProperty(
+    'imageProductSearch'.toJS,
+    ((JSAny? imageSource, JSNumber? maxResults) {
+      final future = () async {
+        final jsonImage = _jsToJsonImage(imageSource);
+        final result = await vision.image.productSearch(
+          jsonImage,
+          maxResults: maxResults?.toDartInt ?? 10,
+        );
+        return _dartToJs(result?.toJson());
+      }();
+      return future.toJS;
+    }).toJS,
+  );
+
   // -- File detection methods ------------------------------------------------
 
   handle.setProperty(
@@ -277,6 +292,126 @@ JSObject _createVisionHandle() {
       final future = () async {
         final inputConfig = InputConfig.fromGsUri(gcsUri.toDart);
         final results = await vision.file.faceDetection(
+          inputConfig,
+          maxResults: maxResults?.toDartInt ?? 10,
+        );
+        return _dartToJs(results.map((e) => e.toJson()).toList());
+      }();
+      return future.toJS;
+    }).toJS,
+  );
+
+  handle.setProperty(
+    'fileCropHints'.toJS,
+    ((JSString gcsUri, JSNumber? maxResults) {
+      final future = () async {
+        final inputConfig = InputConfig.fromGsUri(gcsUri.toDart);
+        final results = await vision.file.cropHints(
+          inputConfig,
+          maxResults: maxResults?.toDartInt ?? 10,
+        );
+        return _dartToJs(results.map((e) => e.toJson()).toList());
+      }();
+      return future.toJS;
+    }).toJS,
+  );
+
+  handle.setProperty(
+    'fileImageProperties'.toJS,
+    ((JSString gcsUri, JSNumber? maxResults) {
+      final future = () async {
+        final inputConfig = InputConfig.fromGsUri(gcsUri.toDart);
+        final results = await vision.file.imageProperties(
+          inputConfig,
+          maxResults: maxResults?.toDartInt ?? 10,
+        );
+        return _dartToJs(results.map((e) => e.toJson()).toList());
+      }();
+      return future.toJS;
+    }).toJS,
+  );
+
+  handle.setProperty(
+    'fileLandmarkDetection'.toJS,
+    ((JSString gcsUri, JSNumber? maxResults) {
+      final future = () async {
+        final inputConfig = InputConfig.fromGsUri(gcsUri.toDart);
+        final results = await vision.file.landmarkDetection(
+          inputConfig,
+          maxResults: maxResults?.toDartInt ?? 10,
+        );
+        return _dartToJs(results.map((e) => e.toJson()).toList());
+      }();
+      return future.toJS;
+    }).toJS,
+  );
+
+  handle.setProperty(
+    'fileLogoDetection'.toJS,
+    ((JSString gcsUri, JSNumber? maxResults) {
+      final future = () async {
+        final inputConfig = InputConfig.fromGsUri(gcsUri.toDart);
+        final results = await vision.file.logoDetection(
+          inputConfig,
+          maxResults: maxResults?.toDartInt ?? 10,
+        );
+        return _dartToJs(results.map((e) => e.toJson()).toList());
+      }();
+      return future.toJS;
+    }).toJS,
+  );
+
+  handle.setProperty(
+    'fileObjectLocalization'.toJS,
+    ((JSString gcsUri, JSNumber? maxResults) {
+      final future = () async {
+        final inputConfig = InputConfig.fromGsUri(gcsUri.toDart);
+        final results = await vision.file.objectLocalization(
+          inputConfig,
+          maxResults: maxResults?.toDartInt ?? 10,
+        );
+        return _dartToJs(results.map((e) => e.toJson()).toList());
+      }();
+      return future.toJS;
+    }).toJS,
+  );
+
+  handle.setProperty(
+    'fileSafeSearchDetection'.toJS,
+    ((JSString gcsUri, JSNumber? maxResults) {
+      final future = () async {
+        final inputConfig = InputConfig.fromGsUri(gcsUri.toDart);
+        final results = await vision.file.safeSearchDetection(
+          inputConfig,
+          maxResults: maxResults?.toDartInt ?? 10,
+        );
+        return _dartToJs(results.map((e) => e.toJson()).toList());
+      }();
+      return future.toJS;
+    }).toJS,
+  );
+
+  handle.setProperty(
+    'fileWebDetection'.toJS,
+    ((JSString gcsUri, JSNumber? maxResults) {
+      final future = () async {
+        final inputConfig = InputConfig.fromGsUri(gcsUri.toDart);
+        final results = await vision.file.webDetection(
+          inputConfig,
+          maxResults: maxResults?.toDartInt ?? 10,
+        );
+        return _dartToJs(results.map((e) => e.toJson()).toList());
+      }();
+      return future.toJS;
+    }).toJS,
+  );
+
+  handle.setProperty(
+    'fileProductSearch'.toJS,
+    ((JSString gcsUri, JSNumber? maxResults) {
+      final future = () async {
+        final inputConfig = InputConfig.fromGsUri(gcsUri.toDart);
+        final results = await vision.file.productSearch(
           inputConfig,
           maxResults: maxResults?.toDartInt ?? 10,
         );

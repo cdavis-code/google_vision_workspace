@@ -75,6 +75,11 @@ export interface VisionJsHandle {
     maxResults?: number,
   ): Promise<Record<string, any> | null>;
 
+  imageProductSearch(
+    imageSource: string | ImageSource,
+    maxResults?: number,
+  ): Promise<Record<string, any> | null>;
+
   // ---- File detection methods (GCS URIs) ----
 
   fileLabelDetection(
@@ -93,6 +98,46 @@ export interface VisionJsHandle {
   ): Promise<Record<string, any>[]>;
 
   fileFaceDetection(
+    gcsUri: string,
+    maxResults?: number,
+  ): Promise<Record<string, any>[]>;
+
+  fileCropHints(
+    gcsUri: string,
+    maxResults?: number,
+  ): Promise<Record<string, any>[]>;
+
+  fileImageProperties(
+    gcsUri: string,
+    maxResults?: number,
+  ): Promise<Record<string, any>[]>;
+
+  fileLandmarkDetection(
+    gcsUri: string,
+    maxResults?: number,
+  ): Promise<Record<string, any>[]>;
+
+  fileLogoDetection(
+    gcsUri: string,
+    maxResults?: number,
+  ): Promise<Record<string, any>[]>;
+
+  fileObjectLocalization(
+    gcsUri: string,
+    maxResults?: number,
+  ): Promise<Record<string, any>[]>;
+
+  fileSafeSearchDetection(
+    gcsUri: string,
+    maxResults?: number,
+  ): Promise<Record<string, any>[]>;
+
+  fileWebDetection(
+    gcsUri: string,
+    maxResults?: number,
+  ): Promise<Record<string, any>[]>;
+
+  fileProductSearch(
     gcsUri: string,
     maxResults?: number,
   ): Promise<Record<string, any>[]>;

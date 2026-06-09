@@ -20,6 +20,7 @@ A Flutter widget package that integrates Google Cloud Vision image labeling, fac
 - [Features](#features)
   - [Image Detection](#image-detection-googlevisionimagebuilder)
   - [File Detection](#file-detection-googlevisionfilebuilder)
+- [Document Text to Markdown](#document-text-to-markdown)
 - [Configuration](#configuration)
   - [GoogleVision Initialization](#googlevision-initialization)
   - [Builder Parameters](#builder-parameters)
@@ -37,7 +38,7 @@ A Flutter widget package that integrates Google Cloud Vision image labeling, fac
 
 ```yaml
 dependencies:
-  google_vision_flutter: ^2.0.0+12
+  google_vision_flutter: ^2.0.0
 ```
 
 ### 2. Authenticate
@@ -89,6 +90,7 @@ Analyze images via the Cloud Vision API using declarative Flutter widgets:
 | Logo Detection | `GoogleVisionImageBuilder.logoDetection()` | `EntityAnnotation` |
 | Text Detection | `GoogleVisionImageBuilder.textDetection()` | `EntityAnnotation` |
 | Document Text Detection | `GoogleVisionImageBuilder.documentTextDetection()` | `FullTextAnnotation` |
+| Document Text to Markdown | `GoogleVisionImageBuilder.documentTextToMarkdown()` | `String` (markdown) |
 | Object Localization | `GoogleVisionImageBuilder.objectLocalization()` | `LocalizedObjectAnnotation` |
 | Safe Search Detection | `GoogleVisionImageBuilder.safeSearchDetection()` | `SafeSearchAnnotation` |
 | Image Properties | `GoogleVisionImageBuilder.imageProperties()` | `ImagePropertiesAnnotation` |
@@ -117,6 +119,55 @@ Analyze PDF / TIFF files using the Cloud Vision API:
 
 ---
 
+## Document Text to Markdown
+
+Convert the result of `DOCUMENT_TEXT_DETECTION` directly into structured Markdown using the
+`GoogleVisionImageBuilder.documentTextToMarkdown` factory. The builder runs the Vision API,
+passes the resulting `FullTextAnnotation` through `MarkdownConverter`, and yields a `String?`
+containing the rendered markdown (or `null` if no text was detected).
+
+### Basic usage
+
+```dart
+import 'package:flutter/material.dart';
+import 'package:google_vision_flutter/google_vision_flutter.dart';
+
+GoogleVisionImageBuilder.documentTextToMarkdown(
+  googleVision: googleVision,
+  imageProvider: NetworkImage('https://example.com/document.png'),
+  builder: (BuildContext context, String? markdown) {
+    if (markdown == null) return const Text('No text detected');
+    return SelectableText(markdown);
+  },
+);
+```
+
+### With custom `MarkdownOptions`
+
+Pass a `MarkdownOptions` instance to tune the converter (e.g. include per-symbol confidence
+annotations, change list/header heuristics, etc.):
+
+```dart
+GoogleVisionImageBuilder.documentTextToMarkdown(
+  googleVision: googleVision,
+  imageProvider: NetworkImage('https://example.com/document.png'),
+  markdownOptions: const MarkdownOptions(
+    includeConfidence: true,
+  ),
+  builder: (BuildContext context, String? markdown) {
+    if (markdown == null) return const Text('No text detected');
+    return SelectableText(markdown);
+  },
+);
+```
+
+> **Advanced use cases:** `MarkdownConverter`, `MarkdownOptions`, `RetryUtility`, and
+> `RequestValidator` are all re-exported from `package:google_vision_flutter/google_vision_flutter.dart`,
+> so you can call the converter directly on a `FullTextAnnotation`, build your own retry
+> pipeline, or validate Vision API requests outside of the builder widget.
+
+---
+
 ## Configuration
 
 ### GoogleVision Initialization
@@ -124,7 +175,9 @@ Analyze PDF / TIFF files using the Cloud Vision API:
 | Method | Description |
 |--------|-------------|
 | `GoogleVision().withAsset(path)` | Load JWT credentials from a Flutter asset |
+| `GoogleVision().withJwt(credentialsJson)` | Authenticate with a service account JSON string |
 | `GoogleVision().withApiKey(key)` | Authenticate using an API key |
+| `GoogleVision().withGenerator(tokenGenerator)` | Authenticate with a custom token generator |
 | `GoogleVision(LogLevel.all).withAsset(path)` | Enable verbose logging |
 
 ### Builder Parameters

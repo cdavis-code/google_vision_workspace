@@ -6,5 +6,5 @@ library;
 import 'dart:convert' show json;
 
 final pubSpec = json.decode(
-  '{"name":"google_vision","version":"2.0.0+12","description":"Allows you to add Google Visions image labeling, face, logo, and landmark detection, OCR, and detection of explicit content, into cross platform applications.","homepage":"https://github.com/cdavis-code/google_vision_workspace/tree/main/packages/google_vision","repository":"https://github.com/cdavis-code/google_vision_workspace"}',
+  '{"name":"google_vision","version":"2.2.0","description":"Allows you to add Google Visions image labeling, face, logo, and landmark detection, OCR, and detection of explicit content, into cross platform applications.","homepage":"https://github.com/cdavis-code/google_vision_workspace/tree/main/packages/google_vision","repository":"https://github.com/cdavis-code/google_vision_workspace"}',
 );

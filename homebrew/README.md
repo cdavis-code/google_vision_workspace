@@ -21,26 +21,55 @@ The formula at [`vision.rb`](vision.rb) installs the `vision` command-line tool 
 
 ### Requirements
 
-- [Dart SDK](https://dart.dev/get-dart) — automatically installed by Homebrew as a build dependency when installing from source
+| Requirement | Notes |
+|-------------|-------|
+| [Dart SDK](https://dart.dev/get-dart) | Automatically installed by Homebrew as a build dependency |
 
 ### How It Works
 
-1. The formula clones the `google_vision_workspace` monorepo
-2. Runs `dart pub get` at the workspace root to resolve dependencies
-3. Compiles `packages/google_vision_cli/bin/vision.dart` to a native binary with `dart compile exe`
-4. Installs the resulting binary to `/usr/local/bin/vision`
+1. The formula clones the `google_vision_workspace` monorepo at the tagged version
+2. `cd`s into `packages/google_vision_cli` and strips `resolution: workspace` from `pubspec.yaml` (avoids pulling in the Flutter dependency from `google_vision_flutter`)
+3. Runs `dart pub get` to resolve only the CLI package's dependencies
+4. Compiles `bin/vision.dart` to a native binary with `dart compile exe`
+5. Installs the resulting binary to Homebrew's `bin` directory
 
 ## Releasing a Stable Version
 
-1. Push a version tag (e.g. `git tag v2.0.0 && git push origin v2.0.0`)
-2. The [homebrew-release workflow](../.github/workflows/homebrew-release.yaml) builds platform-specific binaries and attaches them to a GitHub Release
-3. Update the formula's `url` and `sha256` to point to the release tarball
-4. Commit and push the formula update to your tap repository
+### Steps 1–4: Manual (run locally)
+
+| Step | Action |
+|------|--------|
+| 1 | Bump `version` in `packages/google_vision_cli/pubspec.yaml` |
+| 2 | Add a new entry to `packages/google_vision_cli/CHANGELOG.md` |
+| 3 | Run `melos run meta` from the workspace root to regenerate `lib/meta.dart` |
+| 4 | Run `melos run analyze` and commit all changes |
+
+### Steps 5–9: Automated (triggered by tag)
+
+Run the **[create-tag](../.github/workflows/create-tag.yaml)** workflow (`workflow_dispatch`) with the new version number — this creates and pushes the git tag.
+
+The tag push triggers three workflows in parallel:
+
+| Workflow | Step | What it does |
+|----------|------|-------------|
+| [publish-pub-dev](../.github/workflows/publish-pub-dev.yaml) | 5 | Publishes the package to pub.dev (OIDC auth, no token needed) |
+| [homebrew-release](../.github/workflows/homebrew-release.yaml) | — | Builds native binaries for macOS (arm64/x64), Linux (x64/arm64), and Windows (x64), attaches them to a GitHub Release |
+| [homebrew-formula-update](../.github/workflows/homebrew-formula-update.yaml) | 7–9 | Computes tarball SHA256, updates `Formula/vision.rb` in the tap repo, runs `brew audit` |
+
+### Secrets Required
+
+| Secret | Purpose |
+|--------|---------|
+| `HOMEBREW_TAP_TOKEN` | GitHub PAT with `repo` scope for pushing to `cdavis-code/homebrew-google-vision` |
+
+> **Note:** No pub.dev token is needed — `publish-pub-dev.yaml` uses OIDC authentication via the `dart-lang/setup-dart` reusable workflow.
 
 ## Setting Up the Tap Repository
 
-This `homebrew/` directory is the source for your Homebrew tap. To make it installable:
+This `homebrew/` directory is the source for your Homebrew tap. The formula is automatically pushed to the tap repo by the `homebrew-formula-update` workflow on each release.
+
+**One-time setup:**
 
 1. Create a new GitHub repository: **`homebrew-google-vision`**
-2. Copy the contents of this `homebrew/` directory into that repo
+2. Push the initial formula manually (subsequent updates are automated)
 3. Users can then run: `brew tap cdavis-code/google-vision && brew install vision`
